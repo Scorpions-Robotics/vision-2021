@@ -48,7 +48,7 @@ try:
 
     print(x, y, w, h)
 
-    cv2.imwrite("ref-pic-post.jpeg", result)
+    cv2.imwrite("images/ref-pic-post.jpeg", result)
 
     # TODO: Remove below lines (until break (included)) lines before deploying to Jetson
     cv2.imshow("video", result)
