@@ -16,6 +16,7 @@ x = 0
 y = 0
 w = 0
 h = 0
+d = 0
 
 hoop_classifier = cv2.CascadeClassifier("cascade.xml")
 
@@ -23,26 +24,34 @@ context = zmq.Context()
 footage_socket = context.socket(zmq.PUB)
 footage_socket.connect("tcp://10.7.17.117:5555")
 
+
 def white_balance(frame):
-            result = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
-            avg_a = np.average(result[:, :, 1])
-            avg_b = np.average(result[:, :, 2])
-            result[:, :, 1] = result[:, :, 1] - (
-                (avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1
-            )
-            result[:, :, 2] = result[:, :, 2] - (
-                (avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1
-            )
-            result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
-            return result
+    result = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
+    avg_a = np.average(result[:, :, 1])
+    avg_b = np.average(result[:, :, 2])
+    result[:, :, 1] = result[:, :, 1] - (
+        (avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1
+    )
+    result[:, :, 2] = result[:, :, 2] - (
+        (avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1
+    )
+    result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
+    return result
+
+
+KNOWN_WIDTH = 39
+KNOWN_PIXEL_WIDTH = 182
+KNOWN_DISTANCE = 171
+
 
 def calibrate():
-    KNOWN_WIDTH = 39
-    KNOWN_PIXEL_WIDTH = 
-    KNOWN_DISTANCE = 
     FOCAL_LENGTH = (KNOWN_PIXEL_WIDTH * KNOWN_DISTANCE) / KNOWN_WIDTH
+    return FOCAL_LENGTH
+
 
 def current_distance():
+    d = (KNOWN_WIDTH * calibrate()) / w
+    return d
 
 
 while True:
@@ -68,12 +77,15 @@ while True:
             roi_gray = gray[y : y + h, x : x + w]
             roi_color = result[y : y + h, x : x + w]
 
-        print(x, y, w, h)
+        d = current_distance()
+
+        print(x, y, w, h, d)
 
         table.putNumber("X", x)
         table.putNumber("Y", y)
         table.putNumber("W", w)
         table.putNumber("H", h)
+        table.putNumber("D", d)
 
         encoded, buffer = cv2.imencode(".jpg", result)
         footage_socket.send(buffer)
