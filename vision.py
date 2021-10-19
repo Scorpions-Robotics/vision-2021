@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 import imutils
 import zmq
+import socket
 
 
 NetworkTables.initialize(server="roborio-7672-frc.local")
@@ -17,12 +18,16 @@ y = 0
 w = 0
 h = 0
 d = 0
+r = 0
 
 hoop_classifier = cv2.CascadeClassifier("cascade.xml")
 
+hostname = socket.gethostname()
+local_ip = socket.gethostbyname(hostname)
+
 context = zmq.Context()
 footage_socket = context.socket(zmq.PUB)
-footage_socket.connect("tcp://10.7.17.117:5555")
+footage_socket.connect(f"{local_ip}:5555")
 
 
 def white_balance(frame):
@@ -42,6 +47,41 @@ def white_balance(frame):
 KNOWN_WIDTH = 39
 KNOWN_PIXEL_WIDTH = 182
 KNOWN_DISTANCE = 171
+
+
+def get_dimensions_x():
+    try:
+        dim_x = camera.get(3)
+        return dim_x
+    except Exception:
+        dim_x = 0
+        return dim_x
+
+
+def get_dimensions_y():
+    try:
+        dim_y = camera.get(4)
+        return dim_y
+    except Exception:
+        dim_y = 0
+        return dim_y
+
+
+def get_cc():
+    for i in hoops:
+        M = cv2.moments(i)
+        if M["m00"] != 0:
+            cx = int(M["m10"] / M["m00"])
+            cy = int(M["m01"] / M["m00"])
+            cv2.circle(result, (int(cx), int(cy)), (0, 255, 255), 2)
+            return cx, cy
+
+
+def calculate_rotation():
+    r_x, r_y = get_cc()
+    location = r_x - (get_dimensions_x() / 2)
+    rotate = location * -1
+    return rotate
 
 
 def calibrate():
@@ -80,14 +120,16 @@ while True:
                 roi_color = result[y : y + h, x : x + w]
 
             d = current_distance()
+            r = calculate_rotation()
 
-            print(x, y, w, h, d)
+            print(x, y, w, h, d, r)
 
             table.putNumber("X", x)
             table.putNumber("Y", y)
             table.putNumber("W", w)
             table.putNumber("H", h)
             table.putNumber("D", d)
+            table.putNumber("R", r)
 
             encoded, buffer = cv2.imencode(".jpg", result)
             footage_socket.send(buffer)
