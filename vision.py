@@ -2,6 +2,8 @@ from networktables import NetworkTables
 import numpy as np
 import cv2
 import imutils
+import time
+import zmq
 
 
 NetworkTables.initialize(server="roborio-7672-frc.local")
@@ -9,7 +11,7 @@ table = NetworkTables.getTable("Vision")
 
 camera = cv2.VideoCapture(0)
 camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
-# camera.set(15, -8)
+# camera.set(15, -9)
 
 x = 0
 y = 0
@@ -17,6 +19,10 @@ w = 0
 h = 0
 
 hoop_classifier = cv2.CascadeClassifier("cascade.xml")
+
+context = zmq.Context()
+footage_socket = context.socket(zmq.PUB)
+footage_socket.connect("tcp://10.7.17.117:5555")
 
 while True:
 
@@ -61,6 +67,10 @@ while True:
         table.putNumber("W", w)
         table.putNumber("H", h)
 
+        encoded, buffer = cv2.imencode(".jpg", result)
+        footage_socket.send(buffer)
+
+        # TODO: Remove lines #64-68 before deploying to Jetson
         cv2.imshow("video", result)
         k = cv2.waitKey(30) & 0xFF
         if k == 27:  # press 'ESC' to quit
