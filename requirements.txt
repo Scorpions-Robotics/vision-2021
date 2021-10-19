@@ -1,0 +1,5 @@
+pynetworktables
+numpy
+pyzmq
+opencv-python
+imutils
