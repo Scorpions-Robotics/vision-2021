@@ -9,8 +9,8 @@ NetworkTables.initialize(server="roborio-7672-frc.local")
 table = NetworkTables.getTable("Vision")
 
 camera = cv2.VideoCapture(0)
-camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
-# camera.set(15, -9)
+# camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+camera.set(15, -9)
 
 x = 0
 y = 0
@@ -63,37 +63,41 @@ while True:
 
     try:
 
-        frame = imutils.rotate(frame, angle=0)
+        try:
 
-        result = white_balance(frame)
+            frame = imutils.rotate(frame, angle=0)
 
-        gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
-        hoops = hoop_classifier.detectMultiScale(
-            gray, scaleFactor=1.2, minNeighbors=5, minSize=(20, 20)
-        )
+            result = white_balance(frame)
 
-        for (x, y, w, h) in hoops:
-            cv2.rectangle(result, (x, y), (x + w, y + h), (255, 0, 0), 2)
-            roi_gray = gray[y : y + h, x : x + w]
-            roi_color = result[y : y + h, x : x + w]
+            gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
+            hoops = hoop_classifier.detectMultiScale(
+                gray, scaleFactor=1.2, minNeighbors=5, minSize=(20, 20)
+            )
 
-        d = current_distance()
+            for (x, y, w, h) in hoops:
+                cv2.rectangle(result, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                roi_gray = gray[y : y + h, x : x + w]
+                roi_color = result[y : y + h, x : x + w]
 
-        print(x, y, w, h, d)
+            d = current_distance()
 
-        table.putNumber("X", x)
-        table.putNumber("Y", y)
-        table.putNumber("W", w)
-        table.putNumber("H", h)
-        table.putNumber("D", d)
+            print(x, y, w, h, d)
 
-        encoded, buffer = cv2.imencode(".jpg", result)
-        footage_socket.send(buffer)
+            table.putNumber("X", x)
+            table.putNumber("Y", y)
+            table.putNumber("W", w)
+            table.putNumber("H", h)
+            table.putNumber("D", d)
 
-        # TODO: Remove below lines (until break (included)) lines before deploying to Jetson
-        cv2.imshow("video", result)
-        k = cv2.waitKey(30) & 0xFF
-        if k == 27:  # press 'ESC' to quit
+            encoded, buffer = cv2.imencode(".jpg", result)
+            footage_socket.send(buffer)
+
+            cv2.imshow("video", result)
+            k = cv2.waitKey(30) & 0xFF
+            if k == 27:  # press 'ESC' to quit
+                break
+
+        except KeyboardInterrupt:
             break
 
     except AttributeError as e:
