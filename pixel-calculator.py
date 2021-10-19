@@ -31,7 +31,7 @@ def white_balance(frame):
 
 
 try:
-    frame = cv2.imread("ref-pic.jpeg")
+    frame = cv2.imread("images/ref-pic.jpeg")
     frame = imutils.rotate(frame, angle=0)
 
     result = white_balance(frame)
