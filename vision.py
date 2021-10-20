@@ -9,8 +9,8 @@ import socket
 NetworkTables.initialize(server="roborio-7672-frc.local")
 table = NetworkTables.getTable("Vision")
 
-camera = cv2.VideoCapture(0)
-# camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1)
+camera = cv2.VideoCapture(1)
+# camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
 camera.set(15, -9)
 
 x = 0
@@ -44,9 +44,9 @@ def white_balance(frame):
     return result
 
 
-KNOWN_WIDTH = 39
-KNOWN_PIXEL_WIDTH = 172
-KNOWN_DISTANCE = 171
+KNOWN_WIDTH = 43
+KNOWN_PIXEL_WIDTH = 231
+KNOWN_DISTANCE = 124
 
 
 def get_dimensions_x():
@@ -82,8 +82,8 @@ def get_dimensions_y():
 
 def calculate_rotation():
     if x:
-        x_c = x - y / 2
-        location = x - (get_dimensions_x() / 2)
+        x_c = x + (x / 2)
+        location = x_c - (get_dimensions_x() / 2)
         rotate = location * -1
         return rotate
 
