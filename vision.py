@@ -67,8 +67,8 @@ def get_dimensions_y():
         return dim_y
 
 
-def get_cc():
-    if hoops:
+"""def get_cc():
+    try:
         for i in hoops:
             M = cv2.moments(i)
             if M["m00"] != 0:
@@ -76,12 +76,14 @@ def get_cc():
                 cy = int(M["m01"] / M["m00"])
                 cv2.circle(result, (int(cx), int(cy)), (0, 255, 255), 2)
                 return cx, cy
+    except Exception:
+        pass"""
 
 
 def calculate_rotation():
-    if hoops:
-        r_x, r_y = get_cc()
-        location = r_x - (get_dimensions_x() / 2)
+    if x:
+        x_c = x - y / 2
+        location = x - (get_dimensions_x() / 2)
         rotate = location * -1
         return rotate
 
@@ -92,9 +94,11 @@ def calibrate():
 
 
 def current_distance():
-    if hoops:
+    try:
         d = (KNOWN_WIDTH * calibrate()) / w
         return d
+    except Exception:
+        pass
 
 
 while True:
@@ -131,9 +135,11 @@ while True:
             table.putNumber("Y", y)
             table.putNumber("W", w)
             table.putNumber("H", h)
-            if d != None or r != None:
+            try:
                 table.putNumber("D", d)
                 table.putNumber("R", r)
+            except Exception:
+                pass
 
             encoded, buffer = cv2.imencode(".jpg", result)
             footage_socket.send(buffer)
