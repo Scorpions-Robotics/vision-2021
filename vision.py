@@ -9,7 +9,7 @@ import socket
 NetworkTables.initialize(server="roborio-7672-frc.local")
 table = NetworkTables.getTable("Vision")
 
-camera = cv2.VideoCapture(1)
+camera = cv2.VideoCapture(0)
 # camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
 camera.set(15, -9)
 
