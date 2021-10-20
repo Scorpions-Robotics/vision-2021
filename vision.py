@@ -68,20 +68,22 @@ def get_dimensions_y():
 
 
 def get_cc():
-    for i in hoops:
-        M = cv2.moments(i)
-        if M["m00"] != 0:
-            cx = int(M["m10"] / M["m00"])
-            cy = int(M["m01"] / M["m00"])
-            cv2.circle(result, (int(cx), int(cy)), (0, 255, 255), 2)
-            return cx, cy
+    if hoops:
+        for i in hoops:
+            M = cv2.moments(i)
+            if M["m00"] != 0:
+                cx = int(M["m10"] / M["m00"])
+                cy = int(M["m01"] / M["m00"])
+                cv2.circle(result, (int(cx), int(cy)), (0, 255, 255), 2)
+                return cx, cy
 
 
 def calculate_rotation():
-    r_x, r_y = get_cc()
-    location = r_x - (get_dimensions_x() / 2)
-    rotate = location * -1
-    return rotate
+    if hoops:
+        r_x, r_y = get_cc()
+        location = r_x - (get_dimensions_x() / 2)
+        rotate = location * -1
+        return rotate
 
 
 def calibrate():
@@ -90,8 +92,9 @@ def calibrate():
 
 
 def current_distance():
-    d = (KNOWN_WIDTH * calibrate()) / w
-    return d
+    if hoops:
+        d = (KNOWN_WIDTH * calibrate()) / w
+        return d
 
 
 while True:
@@ -128,8 +131,9 @@ while True:
             table.putNumber("Y", y)
             table.putNumber("W", w)
             table.putNumber("H", h)
-            table.putNumber("D", d)
-            table.putNumber("R", r)
+            if d != None or r != None:
+                table.putNumber("D", d)
+                table.putNumber("R", r)
 
             encoded, buffer = cv2.imencode(".jpg", result)
             footage_socket.send(buffer)
