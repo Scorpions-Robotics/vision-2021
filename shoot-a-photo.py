@@ -1,6 +1,6 @@
 import cv2
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(15, -9)
 ret, frame = cap.read()
 
