@@ -27,7 +27,7 @@ local_ip = socket.gethostbyname(hostname)
 
 context = zmq.Context()
 footage_socket = context.socket(zmq.PUB)
-footage_socket.connect(f"{local_ip}:5555")
+footage_socket.connect(f"tcp://{local_ip}:5555")
 
 
 def white_balance(frame):
@@ -45,7 +45,7 @@ def white_balance(frame):
 
 
 KNOWN_WIDTH = 39
-KNOWN_PIXEL_WIDTH = 182
+KNOWN_PIXEL_WIDTH = 172
 KNOWN_DISTANCE = 171
 
 
