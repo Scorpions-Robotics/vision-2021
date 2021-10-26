@@ -6,11 +6,11 @@ import zmq
 import socket
 
 
-NetworkTables.initialize(server="roborio-7672-frc.local")
-table = NetworkTables.getTable("Vision")
+NetworkTables.initialize(server="scorpions7672.local")
+table = NetworkTables.getTable("vision")
 
 camera = cv2.VideoCapture(0)
-# camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
+camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
 camera.set(15, -9)
 
 x = 0
@@ -19,6 +19,13 @@ w = 0
 h = 0
 d = 0
 r = 0
+
+count = 0
+
+KNOWN_WIDTH = 43
+KNOWN_PIXEL_WIDTH = 231
+KNOWN_DISTANCE = 124
+
 
 hoop_classifier = cv2.CascadeClassifier("cascade.xml")
 
@@ -44,11 +51,6 @@ def white_balance(frame):
     return result
 
 
-KNOWN_WIDTH = 43
-KNOWN_PIXEL_WIDTH = 231
-KNOWN_DISTANCE = 124
-
-
 def get_dimensions_x():
     try:
         dim_x = camera.get(3)
@@ -67,22 +69,9 @@ def get_dimensions_y():
         return dim_y
 
 
-"""def get_cc():
-    try:
-        for i in hoops:
-            M = cv2.moments(i)
-            if M["m00"] != 0:
-                cx = int(M["m10"] / M["m00"])
-                cy = int(M["m01"] / M["m00"])
-                cv2.circle(result, (int(cx), int(cy)), (0, 255, 255), 2)
-                return cx, cy
-    except Exception:
-        pass"""
-
-
 def calculate_rotation():
     if x:
-        x_c = x + (x / 2)
+        x_c = x + (x / 2) - (w / 2)
         location = x_c - (get_dimensions_x() / 2)
         rotate = location * -1
         return rotate
@@ -101,24 +90,46 @@ def current_distance():
         pass
 
 
+def crosshair():
+    color = (0, 255, 0)
+    fpt1 = (int((get_dimensions_x() / 2) - 20), int(get_dimensions_y() / 2))
+    fpt2 = (int((get_dimensions_x() / 2) + 20), int(get_dimensions_y() / 2))
+    spt1 = (int(get_dimensions_x() / 2), int((get_dimensions_y() / 2) - 20))
+    spt2 = (int(get_dimensions_x() / 2), int((get_dimensions_y() / 2) + 20))
+
+    crosshair = cv2.line(
+        result,
+        fpt1,
+        fpt2,
+        color,
+        2,
+    )
+
+    crosshair = cv2.line(
+        crosshair,
+        spt1,
+        spt2,
+        color,
+        2,
+    )
+    return crosshair
+
+
 while True:
 
-    (
-        grabbed,
-        frame,
-    ) = camera.read()
+    grabbed, frame = camera.read()
 
-    try:
+    if grabbed == True:
 
         try:
 
             frame = imutils.rotate(frame, angle=0)
-
             result = white_balance(frame)
-
+            original = white_balance(frame)
             gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
+
             hoops = hoop_classifier.detectMultiScale(
-                gray, scaleFactor=1.2, minNeighbors=5, minSize=(20, 20)
+                gray, scaleFactor=1.1, minNeighbors=5, minSize=(20, 20)
             )
 
             for (x, y, w, h) in hoops:
@@ -126,8 +137,12 @@ while True:
                 roi_gray = gray[y : y + h, x : x + w]
                 roi_color = result[y : y + h, x : x + w]
 
-            d = current_distance()
-            r = calculate_rotation()
+            x = round(x)
+            y = round(y)
+            w = round(w)
+            h = round(h)
+            d = round(current_distance())
+            r = round(calculate_rotation(), 1)
 
             print(x, y, w, h, d, r)
 
@@ -135,25 +150,30 @@ while True:
             table.putNumber("Y", y)
             table.putNumber("W", w)
             table.putNumber("H", h)
+
             try:
                 table.putNumber("D", d)
                 table.putNumber("R", r)
+
             except Exception:
                 pass
 
             encoded, buffer = cv2.imencode(".jpg", result)
             footage_socket.send(buffer)
 
-            cv2.imshow("video", result)
+            cv2.imshow("Original", crosshair())
             k = cv2.waitKey(30) & 0xFF
             if k == 27:  # press 'ESC' to quit
                 break
 
-        except KeyboardInterrupt:
-            break
+        except Exception as e:
+            print(e)
 
-    except AttributeError as e:
-        print(e)
+    else:
+        if count == 0:
+            print("No frame captured")
+            count += 1
+
 
 camera.release()
 cv2.destroyAllWindows()
