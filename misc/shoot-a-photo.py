@@ -12,7 +12,7 @@ while True:
 
     cv2.imshow("img", frame)
     if cv2.waitKey(1) & 0xFF == ord("y"):
-        cv2.imwrite(f"../images/test.jpeg", frame)
+        cv2.imwrite(f"../images/ref-pic.jpeg", frame)
         cv2.destroyAllWindows()
         break
 
