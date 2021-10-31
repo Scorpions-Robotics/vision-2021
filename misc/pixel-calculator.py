@@ -2,6 +2,10 @@ from networktables import NetworkTables
 import numpy as np
 import cv2
 import imutils
+import os
+
+
+os.chdir(os.path.dirname(__file__))
 
 x = 0
 y = 0

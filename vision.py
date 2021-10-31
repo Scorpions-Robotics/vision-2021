@@ -71,7 +71,7 @@ def get_dimensions_y():
 
 def calculate_rotation():
     if x:
-        x_c = x + (x / 2) - (w / 2)
+        x_c = x + (x / 2) - (w / 4)
         location = x_c - (get_dimensions_x() / 2)
         rotate = location * -1
         return rotate
@@ -116,12 +116,16 @@ def crosshair():
 
 
 def round_values():
+    global x
+    global y
+    global w
+    global h
     x = round(x)
     y = round(y)
     w = round(w)
     h = round(h)
     d = round(current_distance())
-    r = round(calculate_rotation(), 1)
+    r = round(calculate_rotation())
     return x, y, w, h, d, r
 
 
