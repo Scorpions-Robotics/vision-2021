@@ -4,9 +4,7 @@ import cv2
 import imutils
 import zmq
 import socket
-import faulthandler
 
-faulthandler.enable()
 
 NetworkTables.initialize(server="scorpions7672.local")
 table = NetworkTables.getTable("vision")
