@@ -4,7 +4,9 @@ import cv2
 import imutils
 import zmq
 import socket
+import faulthandler
 
+faulthandler.enable()
 
 NetworkTables.initialize(server="scorpions7672.local")
 table = NetworkTables.getTable("vision")
@@ -115,6 +117,16 @@ def crosshair():
     return crosshair
 
 
+def round_values():
+    x = round(x)
+    y = round(y)
+    w = round(w)
+    h = round(h)
+    d = round(current_distance())
+    r = round(calculate_rotation(), 1)
+    return x, y, w, h, d, r
+
+
 while True:
 
     grabbed, frame = camera.read()
@@ -137,12 +149,12 @@ while True:
                 roi_gray = gray[y : y + h, x : x + w]
                 roi_color = result[y : y + h, x : x + w]
 
-            x = round(x)
-            y = round(y)
-            w = round(w)
-            h = round(h)
-            d = round(current_distance())
-            r = round(calculate_rotation(), 1)
+            try:
+                x, y, w, h, d, r = round_values()
+
+            except Exception:
+                d = current_distance()
+                r = calculate_rotation()
 
             print(x, y, w, h, d, r)
 
