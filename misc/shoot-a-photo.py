@@ -1,11 +1,14 @@
 import cv2
 import os
+from set_camera import set_camera
 
+
+set_camera()
 
 os.chdir(os.path.dirname(__file__))
 
 cap = cv2.VideoCapture(0)
-cap.set(15, -9)
+
 
 while True:
     grabbed, frame = cap.read()
