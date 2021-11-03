@@ -4,14 +4,21 @@ import cv2
 import imutils
 import zmq
 import socket
+import platform
 from set_camera import set_camera
 
 
-set_camera()
 NetworkTables.initialize(server="scorpions7672.local")
 table = NetworkTables.getTable("vision")
 
+if platform.system() == "Linux":
+    set_camera()
+
 camera = cv2.VideoCapture(0)
+
+if platform.system != "Linux"():
+    camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
+    camera.set(15, -9)
 
 x = 0
 y = 0
