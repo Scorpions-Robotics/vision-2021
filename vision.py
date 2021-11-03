@@ -6,6 +6,7 @@ import zmq
 import socket
 import platform
 from set_camera import set_camera
+import time
 
 
 NetworkTables.initialize(server="scorpions7672.local")
@@ -14,11 +15,14 @@ table = NetworkTables.getTable("vision")
 if platform.system() == "Linux":
     set_camera()
 
+
 camera = cv2.VideoCapture(0)
 
 if platform.system() != "Linux":
+    time.sleep(3)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    camera.set(15, -10)
+    camera.set(15, -9)
+
 
 x = 0
 y = 0
@@ -97,7 +101,7 @@ def current_distance():
         pass
 
 
-def crosshair():
+def crosshair(x):
     color = (0, 255, 0)
     fpt1 = (int((get_dimensions_x() / 2) - 20), int(get_dimensions_y() / 2))
     fpt2 = (int((get_dimensions_x() / 2) + 20), int(get_dimensions_y() / 2))
@@ -105,7 +109,7 @@ def crosshair():
     spt2 = (int(get_dimensions_x() / 2), int((get_dimensions_y() / 2) + 20))
 
     crosshair = cv2.line(
-        original,
+        x,
         fpt1,
         fpt2,
         color,
@@ -179,10 +183,10 @@ while True:
             except Exception:
                 pass
 
-            encoded, buffer = cv2.imencode(".jpg", crosshair())
+            encoded, buffer = cv2.imencode(".jpg", crosshair(original))
             footage_socket.send(buffer)
 
-            cv2.imshow("Original", crosshair())
+            cv2.imshow("Original", crosshair(result))
             k = cv2.waitKey(30) & 0xFF
             if k == 27:  # press 'ESC' to quit
                 break

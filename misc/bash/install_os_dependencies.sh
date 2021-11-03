@@ -1,0 +1,1 @@
+sudo apt-get install libavformat-dev libavutil-dev libswscale-dev libv4l-dev libglew-dev
