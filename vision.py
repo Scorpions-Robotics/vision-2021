@@ -16,9 +16,9 @@ if platform.system() == "Linux":
 
 camera = cv2.VideoCapture(0)
 
-if platform.system != "Linux"():
+if platform.system() != "Linux":
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    camera.set(15, -9)
+    camera.set(15, -10)
 
 x = 0
 y = 0
@@ -105,7 +105,7 @@ def crosshair():
     spt2 = (int(get_dimensions_x() / 2), int((get_dimensions_y() / 2) + 20))
 
     crosshair = cv2.line(
-        result,
+        original,
         fpt1,
         fpt2,
         color,
@@ -179,7 +179,7 @@ while True:
             except Exception:
                 pass
 
-            encoded, buffer = cv2.imencode(".jpg", result)
+            encoded, buffer = cv2.imencode(".jpg", crosshair())
             footage_socket.send(buffer)
 
             cv2.imshow("Original", crosshair())
