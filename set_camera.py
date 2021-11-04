@@ -1,8 +1,12 @@
 import os
+from decouple import config
+
+
+exposure = config.get("CAMERA_EXPOSURE")
 
 
 def set_camera():
-    os.system("v4l2-ctl -c exposure_auto=1 -c exposure_absolute=3")
+    os.system(f"v4l2-ctl -c exposure_auto=1 -c exposure_absolute={exposure}")
 
 
 def fix_camera_linux():
