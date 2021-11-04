@@ -15,8 +15,12 @@ NetworkTables.initialize(server="roborio-7672-frc.local")
 table = NetworkTables.getTable("vision")
 
 if platform.system() == "Linux":
+    while True:
+        os.system("python fix_camera.py")
+        break
+    time.sleep(2)
     set_camera()
-    time.sleep(1)
+    time.sleep(0.5)
     camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
 
 if platform.system() != "Linux":
