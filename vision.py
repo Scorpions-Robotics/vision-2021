@@ -16,12 +16,11 @@ if platform.system() == "Linux":
     set_camera()
 
 
-camera = cv2.VideoCapture(0)
-
 if platform.system() != "Linux":
+    camera = cv2.VideoCapture(0)
     time.sleep(3)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    camera.set(15, -9)
+    camera.set(15,-10)
 
 
 x = 0
