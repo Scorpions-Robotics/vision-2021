@@ -155,62 +155,65 @@ while True:
 
     if grabbed == True:
 
+        frame = imutils.rotate(frame, angle=0)
+        result = white_balance(frame)
+        original = white_balance(frame)
+        gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
+
+        hoops = hoop_classifier.detectMultiScale(
+            gray, scaleFactor=1.1, minNeighbors=5, minSize=(20, 20)
+        )
+
+        for (x, y, w, h) in hoops:
+            cv2.rectangle(result, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            roi_gray = gray[y : y + h, x : x + w]
+            roi_color = result[y : y + h, x : x + w]
+
+        if len(hoops) == 0:
+            x, y, w, h = "none", "none", "none", "none"
+
         try:
+            x, y, w, h, d, r = round_values()
 
-            frame = imutils.rotate(frame, angle=0)
-            result = white_balance(frame)
-            original = white_balance(frame)
-            gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
+        except Exception:
+            d = current_distance()
+            r = calculate_rotation()
 
-            hoops = hoop_classifier.detectMultiScale(
-                gray, scaleFactor=1.1, minNeighbors=5, minSize=(20, 20)
-            )
-
-            for (x, y, w, h) in hoops:
-                cv2.rectangle(result, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                roi_gray = gray[y : y + h, x : x + w]
-                roi_color = result[y : y + h, x : x + w]
-
-            try:
-                x, y, w, h, d, r = round_values()
-
-            except Exception:
-                d = current_distance()
-                r = calculate_rotation()
-
-            b = is_detected(d)
-
-            print(x, y, w, h, d, r, b)
-
+        b = is_detected(d)
+        
+        try:
             table.putNumber("X", x)
             table.putNumber("Y", y)
             table.putNumber("W", w)
             table.putNumber("H", h)
             table.putNumber("B", b)
+            table.putNumber("D", d)
+            table.putNumber("R", r)
 
-            try:
-                table.putNumber("D", d)
-                table.putNumber("R", r)
+        except Exception:
+            table.putString("X", x)
+            table.putString("Y", y)
+            table.putString("W", w)
+            table.putString("H", h)
+            table.putNumber("B", b)
+            table.putString("D", "none")
+            table.putString("R", "none")
 
-            except Exception:
-                pass
+        print(x, y, w, h, d, r, b)
 
-            encoded, buffer = cv2.imencode(".jpg", crosshair(original))
-            footage_socket.send(buffer)
+        encoded, buffer = cv2.imencode(".jpg", crosshair(original))
+        footage_socket.send(buffer)
 
-            cv2.imshow("Original", crosshair(result))
-            k = cv2.waitKey(30) & 0xFF
-            if k == 27:  # press 'ESC' to quit
-                break
+        cv2.imshow("Original", crosshair(result))
+        k = cv2.waitKey(30) & 0xFF
+        if k == 27:  # press 'ESC' to quit
+            break
 
-        except Exception as e:
-            print(e)
 
     else:
         if count == 0:
             print("No frame captured")
             count += 1
-
 
 camera.release()
 cv2.destroyAllWindows()
