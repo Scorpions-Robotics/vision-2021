@@ -1,18 +1,30 @@
 import cv2
 import os
 import platform
+from decouple import config
+import time
 from set_camera import set_camera
 
-if platform.system() == "Linux":
-    set_camera()
+os.chdir(os.path.dirname(__file__))
 
-camera = cv2.VideoCapture(0)
+if platform.system() == "Linux":
+    while True:
+        os.system("python fix_camera.py")
+        break
+    time.sleep(2)
+    set_camera()
+    time.sleep(0.5)
+    camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
 
 if platform.system() != "Linux":
+    while True:
+        os.system("python fix_camera.py")
+        break
+    camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
+    time.sleep(1)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    camera.set(15, -10)
-
-os.chdir(os.path.dirname(__file__))
+    time.sleep(1)
+    camera.set(15, int(config("WINDOWS_EXPOSURE")))
 
 while True:
     grabbed, frame = camera.read()

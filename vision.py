@@ -45,7 +45,7 @@ if platform.system() != "Linux":
     time.sleep(1)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
     time.sleep(1)
-    camera.set(15, int(config("CAMERA_EXPOSURE")))
+    camera.set(15, int(config("WINDOWS_EXPOSURE")))
 
 
 hoop_classifier = cv2.CascadeClassifier("cascade.xml")
@@ -165,10 +165,19 @@ while True:
     grabbed, frame = camera.read()
 
     if grabbed == True:
+        if int(config("FLIP_FRAME")) == 1:
+            frame = cv2.flip(frame, 1)
 
-        frame = imutils.rotate(frame, angle=0)
-        result = white_balance(frame)
-        original = white_balance(frame)
+        frame = imutils.rotate(frame, int(config("FRAME_ANGLE")))
+
+        if int(config("WHITE_BALANCE")) == 1:
+            result = white_balance(frame)
+            original = white_balance(frame)
+
+        else:
+            result = frame
+            original = frame
+
         gray = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
 
         hoops = hoop_classifier.detectMultiScale(
@@ -224,6 +233,7 @@ while True:
         if count == 0:
             print("No frame captured")
             count += 1
+            break
 
 camera.release()
 cv2.destroyAllWindows()
