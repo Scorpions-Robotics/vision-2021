@@ -9,18 +9,21 @@ from set_camera import set_camera
 import time
 
 
-NetworkTables.initialize(server="scorpions7672.local")
+NetworkTables.initialize(server="roborio-7672-frc.local")
 table = NetworkTables.getTable("vision")
 
 if platform.system() == "Linux":
     set_camera()
-
+    time.sleep(1)
+    set_camera()
+    time.sleep(1)
+    camera = cv2.VideoCapture(0)
 
 if platform.system() != "Linux":
     camera = cv2.VideoCapture(0)
     time.sleep(3)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    camera.set(15,-10)
+    camera.set(15, -10)
 
 
 x = 0
