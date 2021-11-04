@@ -11,6 +11,20 @@ from set_camera import set_camera
 import time
 
 
+x = 0
+y = 0
+w = 0
+h = 0
+d = 0
+r = 0
+
+count = 0
+
+KNOWN_WIDTH = int(config("KNOWN_WIDTH"))
+KNOWN_PIXEL_WIDTH = int(config("KNOWN_PIXEL_WIDTH"))
+KNOWN_DISTANCE = int(config("KNOWN_DISTANCE"))
+
+
 NetworkTables.initialize(server="roborio-7672-frc.local")
 table = NetworkTables.getTable("vision")
 
@@ -32,20 +46,6 @@ if platform.system() != "Linux":
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
     time.sleep(1)
     camera.set(15, int(config("CAMERA_EXPOSURE")))
-
-
-x = 0
-y = 0
-w = 0
-h = 0
-d = 0
-r = 0
-
-count = 0
-
-KNOWN_WIDTH = int(config("KNOWN_WIDTH"))
-KNOWN_PIXEL_WIDTH = int(config("KNOWN_PIXEL_WIDTH"))
-KNOWN_DISTANCE = int(config("KNOWN_DISTANCE"))
 
 
 hoop_classifier = cv2.CascadeClassifier("cascade.xml")
