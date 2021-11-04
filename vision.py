@@ -1,6 +1,7 @@
 from networktables import NetworkTables
 import numpy as np
 import cv2
+import os
 import imutils
 import zmq
 import socket
@@ -16,15 +17,17 @@ table = NetworkTables.getTable("vision")
 if platform.system() == "Linux":
     set_camera()
     time.sleep(1)
-    set_camera()
-    time.sleep(1)
     camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
 
 if platform.system() != "Linux":
+    while True:
+        os.system("python fix_camera.py")
+        break
     camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
-    time.sleep(3)
+    time.sleep(1)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    camera.set(15, -10)
+    time.sleep(1)
+    camera.set(15, int(config("CAMERA_EXPOSURE")))
 
 
 x = 0
@@ -84,11 +87,13 @@ def get_dimensions_y():
 
 
 def calculate_rotation():
-    if x:
+    try:
         x_c = x + (x / 2) - (w / 4)
         location = x_c - (get_dimensions_x() / 2)
         rotate = location * -1
         return rotate
+    except Exception:
+        return None
 
 
 def calibrate():
@@ -142,12 +147,14 @@ def round_values():
     r = round(calculate_rotation())
     return x, y, w, h, d, r
 
+
 def is_detected(x):
     try:
-        x = x+1
+        x = x + 1
         return 1
-    except:
+    except Exception:
         return 0
+
 
 while True:
 
@@ -180,7 +187,7 @@ while True:
             r = calculate_rotation()
 
         b = is_detected(d)
-        
+
         try:
             table.putNumber("X", x)
             table.putNumber("Y", y)
@@ -205,10 +212,9 @@ while True:
         footage_socket.send(buffer)
 
         cv2.imshow("Original", crosshair(result))
-        k = cv2.waitKey(30) & 0xFF
+        k = cv2.waitKey(1) & 0xFF
         if k == 27:  # press 'ESC' to quit
             break
-
 
     else:
         if count == 0:
