@@ -6,5 +6,36 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      # Lint changes with black
       - uses: actions/checkout@v2
-      - uses: psf/black@stable
+      - name: Lint
+        uses: actions/python-black@v1
+        with:
+          - python-version: "3.9"
+          - files: "."
+          - fail-on-error: true
+          - ignore-patterns: "**/node_modules/**,**/vendor/**"
+          - line-length: 120
+          - verbose: true
+          - diff: true
+          - diff-algorithm: "unified"
+          - diff-context: 3
+          - diff-style: "side-by-side"
+          - diff-label-old: "Before"
+          - diff-label-new: "After"
+          - diff-label-highlight: "Difference"
+          - diff-label-empty: "Empty"
+          - diff-label-line-numbers: "Line Numbers"
+          - diff-label-line-numbers-old: "Before"
+          - diff-label-line-numbers-new: "After"
+          - diff-label-line-numbers-highlight: "Difference"
+          - diff-label-line-numbers-empty: "Empty"
+          - diff-label-line-numbers-separator: ":"
+          - diff-label-line-numbers-separator-old: ":"
+          - diff-label-line-numbers-separator-new: ":"
+          - diff-label-line-numbers-separator-highlight: ":"
+          - diff-label-line-numbers-separator-empty: ":"
+          - diff-label-line-numbers-separator-style: "bold"
+          - diff-label-line-numbers-separator-style-old: "bold"
+          - diff-label-line-numbers-separator-style-new: "bold"
+          - diff-label-line-numbers-separator-style-highlight: "bold"
