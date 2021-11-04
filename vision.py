@@ -5,6 +5,7 @@ import imutils
 import zmq
 import socket
 import platform
+from decouple import config
 from set_camera import set_camera
 import time
 
@@ -17,10 +18,10 @@ if platform.system() == "Linux":
     time.sleep(1)
     set_camera()
     time.sleep(1)
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
 
 if platform.system() != "Linux":
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
     time.sleep(3)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
     camera.set(15, -10)
@@ -35,9 +36,9 @@ r = 0
 
 count = 0
 
-KNOWN_WIDTH = 43
-KNOWN_PIXEL_WIDTH = 231
-KNOWN_DISTANCE = 124
+KNOWN_WIDTH = int(config("KNOWN_WIDTH"))
+KNOWN_PIXEL_WIDTH = int(config("KNOWN_PIXEL_WIDTH"))
+KNOWN_DISTANCE = int(config("KNOWN_DISTANCE"))
 
 
 hoop_classifier = cv2.CascadeClassifier("cascade.xml")
@@ -141,6 +142,12 @@ def round_values():
     r = round(calculate_rotation())
     return x, y, w, h, d, r
 
+def is_detected(x):
+    try:
+        x = x+1
+        return 1
+    except:
+        return 0
 
 while True:
 
@@ -171,12 +178,15 @@ while True:
                 d = current_distance()
                 r = calculate_rotation()
 
-            print(x, y, w, h, d, r)
+            b = is_detected(d)
+
+            print(x, y, w, h, d, r, b)
 
             table.putNumber("X", x)
             table.putNumber("Y", y)
             table.putNumber("W", w)
             table.putNumber("H", h)
+            table.putNumber("B", b)
 
             try:
                 table.putNumber("D", d)
