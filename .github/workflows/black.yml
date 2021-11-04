@@ -1,2 +1,0 @@
-- name: Python Black Formatter - Only on Edited Files
-  uses: rgasper/python-black-pull-request-action@1.1.1
