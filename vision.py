@@ -224,10 +224,11 @@ while True:
         encoded, buffer = cv2.imencode(".jpg", crosshair(original))
         footage_socket.send(buffer)
 
-        cv2.imshow("Original", crosshair(result))
-        k = cv2.waitKey(1) & 0xFF
-        if k == 27:  # press 'ESC' to quit
-            break
+        if int(config("SHOW_FRAME")) == 1:
+            cv2.imshow("Original", crosshair(result))
+            k = cv2.waitKey(1) & 0xFF
+            if k == 27:  # press 'ESC' to quit
+                break
 
     else:
         if count == 0:
