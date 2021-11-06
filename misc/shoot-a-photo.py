@@ -4,7 +4,7 @@ import platform
 import imutils
 from decouple import config
 import time
-from set_camera import set_camera
+from ..functions import set_camera
 
 
 count = 0
@@ -15,7 +15,7 @@ if platform.system() == "Linux":
     while True:
         os.system("python fix_camera.py")
         break
-    set_camera()
+    set_camera.set_camera()
     time.sleep(0.5)
     camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
 
