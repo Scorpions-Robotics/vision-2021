@@ -219,16 +219,16 @@ while True:
             table.putString("D", "none")
             table.putString("R", "none")
 
-        print(x, y, w, h, d, r, b)
+        if int(config("STREAM_FRAME")) == 1:
+            encoded, buffer = cv2.imencode(".jpg", crosshair(original))
+            footage_socket.send(buffer)
 
-        encoded, buffer = cv2.imencode(".jpg", crosshair(original))
-        footage_socket.send(buffer)
+        if int(config("PRINT_VALUES")) == 1:
+            print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: {b}")
 
         if int(config("SHOW_FRAME")) == 1:
             cv2.imshow("Original", crosshair(result))
-            k = cv2.waitKey(1) & 0xFF
-            if k == 27:  # press 'ESC' to quit
-                break
+            cv2.waitKey(1)
 
     else:
         if count == 0:
