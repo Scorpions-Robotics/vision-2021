@@ -21,7 +21,7 @@ if platform.system() == "Linux":
 
 if platform.system() != "Linux":
     while True:
-        os.system("python fix_camera.py")
+        os.system("python ../functions/fix_camera.py")
         break
     camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
     time.sleep(1)
