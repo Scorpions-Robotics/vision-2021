@@ -1,19 +1,36 @@
 [settings]
+; This is a template of settings.ini.
+; Copy this file and rename it to settings.ini. Then edit it to your needs.
+
+; Width of the frame. Default is 640.
+FRAME_WIDTH = 640
+
+; Height of the frame. Default is 480.
+FRAME_HEIGHT = 480
+
 ; In inches. Measure the real width of the hoop.
 KNOWN_WIDTH=43
+
 ; In inches. Measure the pixel width of the hoop. See misc/pixel_calculator.py.
 KNOWN_PIXEL_WIDTH=231 
+
 ; In inches. Measure the real distance from the hoop to the camera.
 KNOWN_DISTANCE=124
+
 ; Index number of the camera to use. Default is 0.
 CAMERA_INDEX=0
+
 ; Only used on Windows. Default is -10.
 WINDOWS_EXPOSURE=-10
+
 ; Only used on Linux. Gets values between 1 and 5000. Default is 3.
 LINUX_EXPOSURE=3
+
 ; Flip frame or not. Gets values 0 or 1. Default is 1.
 FLIP_FRAME=0
+
 ; Frame angle. Gets only integer values. Default is 0.
 FRAME_ANGLE=0
+
 ; White balance. Gets values 0 or 1. Default is 1.
 WHITE_BALANCE=1

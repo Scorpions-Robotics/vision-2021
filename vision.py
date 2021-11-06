@@ -32,7 +32,6 @@ if platform.system() == "Linux":
     while True:
         os.system("python fix_camera.py")
         break
-    time.sleep(2)
     set_camera()
     time.sleep(0.5)
     camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
@@ -44,7 +43,6 @@ if platform.system() != "Linux":
     camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
     time.sleep(1)
     camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    time.sleep(1)
     camera.set(15, int(config("WINDOWS_EXPOSURE")))
 
 
@@ -165,6 +163,11 @@ while True:
     grabbed, frame = camera.read()
 
     if grabbed == True:
+
+        frame = imutils.resize(
+            frame, width=int(config("FRAME_WIDTH")), height=int(config("FRAME_HEIGHT"))
+        )
+
         if int(config("FLIP_FRAME")) == 1:
             frame = cv2.flip(frame, 1)
 
