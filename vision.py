@@ -113,10 +113,22 @@ def current_distance():
 
 def crosshair(x):
     color = (0, 255, 0)
-    fpt1 = (int((get_dimensions_x() / 2) - 20), int(get_dimensions_y() / 2))
-    fpt2 = (int((get_dimensions_x() / 2) + 20), int(get_dimensions_y() / 2))
-    spt1 = (int(get_dimensions_x() / 2), int((get_dimensions_y() / 2) - 20))
-    spt2 = (int(get_dimensions_x() / 2), int((get_dimensions_y() / 2) + 20))
+    fpt1 = (
+        (int(int(config("FRAME_WIDTH")) / 2) - 20),
+        int(int(config("FRAME_HEIGHT")) / 2),
+    )
+    fpt2 = (
+        (int(int(config("FRAME_WIDTH")) / 2) + 20),
+        int(int(config("FRAME_HEIGHT")) / 2),
+    )
+    spt1 = (
+        int(int(config("FRAME_WIDTH")) / 2),
+        int((int(config("FRAME_HEIGHT")) / 2) - 20),
+    )
+    spt2 = (
+        int(int(config("FRAME_WIDTH")) / 2),
+        int((int(config("FRAME_HEIGHT")) / 2) + 20),
+    )
 
     crosshair = cv2.line(
         x,
