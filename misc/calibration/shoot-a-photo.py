@@ -13,7 +13,7 @@ os.chdir(os.path.dirname(__file__))
 
 if platform.system() == "Linux":
     while True:
-        os.system("python fix_camera.py")
+        os.system("python ../functions/fix_camera.py")
         break
     set_camera.set_camera()
     time.sleep(0.5)
@@ -38,7 +38,7 @@ while True:
         )
         cv2.imshow("img", frame)
         if cv2.waitKey(1) & 0xFF == ord("y"):
-            cv2.imwrite(f"../images/ref-pic.jpeg", frame)
+            cv2.imwrite(f"../../images/ref-pic.jpeg", frame)
             cv2.destroyAllWindows()
             break
 

@@ -9,11 +9,11 @@ y = 0
 w = 0
 h = 0
 
-hoop_classifier = cv2.CascadeClassifier("../cascade.xml")
+hoop_classifier = cv2.CascadeClassifier("../../cascade.xml")
 
 
 try:
-    frame = cv2.imread("../images/ref-pic.jpeg")
+    frame = cv2.imread("../../images/ref-pic.jpeg")
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     hoops = hoop_classifier.detectMultiScale(
@@ -30,7 +30,7 @@ try:
 
     print(x, y, w, h)
 
-    cv2.imwrite("../images/ref-pic-post.jpeg", frame)
+    cv2.imwrite("../../images/ref-pic-post.jpeg", frame)
 
     cv2.imshow("result", frame)
     k = cv2.waitKey(5000) & 0xFF
