@@ -21,7 +21,7 @@ KNOWN_DISTANCE=124
 CAMERA_INDEX=0
 
 ; Only used on Windows. Default is -10.
-WINDOWS_EXPOSURE=-15
+WINDOWS_EXPOSURE=-10
 
 ; Only used on Linux. Gets values between 1 and 5000. Default is 3.
 LINUX_EXPOSURE=3
