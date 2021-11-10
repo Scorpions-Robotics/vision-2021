@@ -216,14 +216,23 @@ while True:
 
         b = is_detected(d)
 
-        
-        table.putString("X", x)
-        table.putString("Y", y)
-        table.putString("W", w)
-        table.putString("H", h)
-        table.putNumber("B", b)
-        table.putString("D", d)
-        table.putString("R", r)
+        try:
+            table.putNumber("X", x)
+            table.putNumber("Y", y)
+            table.putNumber("W", w)
+            table.putNumber("H", h)
+            table.putNumber("B", b)
+            table.putNumber("D", d)
+            table.putNumber("R", r)
+
+        except Exception:
+            table.putString("X", x)
+            table.putString("Y", y)
+            table.putString("W", w)
+            table.putString("H", h)
+            table.putNumber("B", b)
+            table.putString("D", "none")
+            table.putString("R", "none")
 
         if int(config("STREAM_FRAME")) == 1:
             encoded, buffer = cv2.imencode(".jpg", crosshair(original))
