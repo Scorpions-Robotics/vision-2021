@@ -223,7 +223,7 @@ while True:
             table.putNumber("H", h)
             table.putNumber("B", b)
             table.putNumber("D", d)
-            table.putNumber("R", r)
+            table.putNumber("R", "bos")
 
         except Exception:
             table.putString("X", x)
@@ -231,8 +231,8 @@ while True:
             table.putString("W", w)
             table.putString("H", h)
             table.putNumber("B", b)
-            table.putString("D", "none")
-            table.putString("R", "none")
+            table.putString("D", d)
+            table.putString("R", r)
 
         if int(config("STREAM_FRAME")) == 1:
             encoded, buffer = cv2.imencode(".jpg", crosshair(original))
