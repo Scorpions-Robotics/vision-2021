@@ -1,41 +1,33 @@
 import cv2
-import os
+import sys
+from pathlib import Path
 
+sys.path.append(str(Path("..").absolute().parent))
+from misc.functions import functions
 
-os.chdir(os.path.dirname(__file__))
 
 x = 0
 y = 0
 w = 0
 h = 0
 
-hoop_classifier = cv2.CascadeClassifier("../../cascade.xml")
+cascade_classifier = cv2.CascadeClassifier("cascade.xml")
 
+while True:
+    try:
+        frame = cv2.imread("images/ref-pic.jpeg")
 
-try:
-    frame = cv2.imread("../../images/ref-pic.jpeg")
+        result, x, y, w, h = functions.vision(frame, cascade_classifier)
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    hoops = hoop_classifier.detectMultiScale(
-        gray, scaleFactor=1.2, minNeighbors=5, minSize=(20, 20)
-    )
+        print(f"X: {x} Y: {y} W: {w} H: {h}")
 
-    for (x, y, w, h) in hoops:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        roi_gray = gray[y : y + h, x : x + w]
-        roi_color = frame[y : y + h, x : x + w]
+        cv2.imshow("img", result)
+        if cv2.waitKey(1) & 0xFF == ord("y"):
+            cv2.imwrite(f"images/ref-pic-post.jpeg", result)
+            print("Processed image is written under images folder.")
+            break
 
-    if len(hoops) == 0:
-        x, y, w, h = "none", "none", "none", "none"
-
-    print(x, y, w, h)
-
-    cv2.imwrite("../../images/ref-pic-post.jpeg", frame)
-
-    cv2.imshow("result", frame)
-    k = cv2.waitKey(5000) & 0xFF
-
-except AttributeError as e:
-    print(e)
+    except KeyboardInterrupt:
+        break
 
 cv2.destroyAllWindows()

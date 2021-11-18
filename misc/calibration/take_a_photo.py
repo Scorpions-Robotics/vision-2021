@@ -1,51 +1,48 @@
 import cv2
-import os
-import platform
 import imutils
 from decouple import config
-import time
-from ..functions import set_camera
+import sys
+from pathlib import Path
 
+sys.path.append(str(Path("..").absolute().parent))
+from misc.functions import functions
 
-count = 0
-
-os.chdir(os.path.dirname(__file__))
-
-if platform.system() == "Linux":
-    while True:
-        os.system("python ../functions/fix_camera.py")
-        break
-    set_camera.set_camera()
-    time.sleep(0.5)
-    camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
-
-if platform.system() != "Linux":
-    while True:
-        os.system("python ../functions/fix_camera.py")
-        break
-    camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
-    time.sleep(1)
-    camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    camera.set(15, int(config("WINDOWS_EXPOSURE")))
+camera = functions.os_action()
 
 while True:
-    grabbed, frame = camera.read()
+    try:
+        grabbed, frame = camera.read()
 
-    if grabbed == True:
+        if grabbed == True:
 
-        frame = imutils.resize(
-            frame, width=int(config("FRAME_WIDTH")), height=int(config("FRAME_HEIGHT"))
-        )
-        cv2.imshow("img", frame)
-        if cv2.waitKey(1) & 0xFF == ord("y"):
-            cv2.imwrite(f"../../images/ref-pic.jpeg", frame)
-            cv2.destroyAllWindows()
-            break
+            frame = imutils.resize(
+                frame,
+                width=int(config("FRAME_WIDTH")),
+                height=int(config("FRAME_HEIGHT")),
+            )
 
-    else:
-        if count == 0:
-            print("No frame captured")
-            count += 1
-            break
+            if int(config("FLIP_FRAME")) == 1:
+                frame = cv2.flip(frame, 1)
+
+            frame = imutils.rotate(frame, int(config("FRAME_ANGLE")))
+
+            if int(config("WHITE_BALANCE")) == 1:
+                frame = functions.white_balance(frame)
+
+            cv2.imshow("img", frame)
+            if cv2.waitKey(1) & 0xFF == ord("y"):
+                cv2.imwrite(f"images/ref-pic.jpeg", frame)
+                print("Taken image is written under images folder.")
+                break
+
+        else:
+            try:
+                camera = functions.os_action()
+            except Exception:
+                pass
+
+    except KeyboardInterrupt:
+        break
 
 camera.release()
+cv2.destroyAllWindows()

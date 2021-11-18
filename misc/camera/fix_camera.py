@@ -6,12 +6,12 @@ import set_camera
 
 
 if platform.system() == "Linux":
-    set_camera.fix_camera_linux()
-    time.sleep(1)
+    set_camera.set_format()
+    time.sleep(0.5)
     cap = cv2.VideoCapture(int(config("CAMERA_INDEX")))
     while True:
         ret, frame = cap.read()
-        time.sleep(1)
+        time.sleep(0.5)
         cap.release()
         break
 
@@ -21,6 +21,6 @@ if platform.system() != "Linux":
     cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.75)
     while True:
         ret, frame = cap.read()
-        time.sleep(1)
+        time.sleep(0.5)
         cap.release()
         break
