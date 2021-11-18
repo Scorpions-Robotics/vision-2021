@@ -105,9 +105,9 @@ We use the Open Source Computer Vision Library [OpenCV](https://opencv.org/) wit
 
 ## Authors
 
-- **@egeakman**
+- **[@egeakman](https://github.com/egeakman)**
 
-- **@ardasak**
+- **[@ardasak](https://github.com/ardasak)**
 
 &nbsp;
 
