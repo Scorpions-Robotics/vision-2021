@@ -2,8 +2,6 @@
 
 ## FRC Infinite Recharge Vision Processing
 
-&nbsp;
-
 [![GitHub](https://img.shields.io/github/license/Scorpions-Robotics/vision-2021?color=blue&label=License&logo=apache-license)](https://raw.githubusercontent.com/Scorpions-Robotics/vision-2021/HEAD/LICENSE) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vidgear_noperm?label=Python&logo=python&logoColor=white)](https://python.org) [![Code Style: Black](https://img.shields.io/badge/Code%20Style-Black-000000.svg)](https://github.com/psf/black) [![OpenCV](https://img.shields.io/badge/OpenCV-27338e?style=flat&logo=OpenCV&logoColor=white)](https://opencv.org)
 
 ## Runs on:
