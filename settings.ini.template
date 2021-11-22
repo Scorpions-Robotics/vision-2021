@@ -43,3 +43,14 @@ STREAM_FRAME=1
 
 ; Decide if the values are printed or not. Gets values 0 or 1. Default is 1.
 PRINT_VALUES=1
+
+;Decide if the frame is filtered by the HSV values or not. Gets values 0 or 1. Default is 1.
+FILTER_FRAME=1
+
+; Set upper and lower HSV values for the requested color.
+H_LOWER=35
+S_LOWER=0
+V_LOWER=0
+H_UPPER=75
+S_UPPER=255
+V_UPPER=255

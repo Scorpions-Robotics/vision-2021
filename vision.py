@@ -14,6 +14,8 @@ h = 0
 d = 0
 r = 0
 
+hsv_lower = (int(config("H_LOWER")), int(config("S_LOWER")), int(config("V_LOWER")))
+hsv_upper = (int(config("H_UPPER")), int(config("S_UPPER")), int(config("V_UPPER")))
 
 kpw = int(config("KNOWN_PIXEL_WIDTH"))
 kd = int(config("KNOWN_DISTANCE"))
@@ -59,7 +61,12 @@ while True:
             if int(config("WHITE_BALANCE")) == 1:
                 frame = functions.white_balance(frame)
 
-            result, x, y, w, h = functions.vision(frame, cascade_classifier)
+            if int(config("FILTER_FRAME")) == 1:
+                hsv_mask = functions.mask_color(frame, (hsv_lower), (hsv_upper))
+                result, x, y, w, h = functions.vision(hsv_mask, cascade_classifier)
+
+            else:
+                result, x, y, w, h = functions.vision(frame, cascade_classifier)
 
             d = functions.current_distance(kpw, kd, kw, w)
             r = functions.calculate_rotation(camera, x, w)
