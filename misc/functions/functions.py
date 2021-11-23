@@ -68,23 +68,20 @@ def calculate_rotation(camera, x, w):
     try:
         x_c = x + (x / 2) - (w / 4)
         location = x_c - (get_dimensions(camera, "x") / 2)
-        rotate = location * -1
-        return rotate
+        return location * -1
     except Exception:
         return None
 
 
 # Calculates the focal length.
 def calibrate(kpw, kd, kw):
-    FOCAL_LENGTH = (kpw * kd) / kw
-    return FOCAL_LENGTH
+    return (kpw * kd) / kw
 
 
 # Calculates the distance between camera and the hoop.
 def current_distance(kpw, kd, kw, w):
     try:
-        d = (kw * calibrate(kpw, kd, kw)) / w
-        return d
+        return (kw * calibrate(kpw, kd, kw)) / w
     except Exception:
         pass
 
