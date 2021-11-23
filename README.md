@@ -4,11 +4,11 @@
 
 [![GitHub](https://img.shields.io/github/license/Scorpions-Robotics/vision-2021?color=blue&label=License&logo=apache-license)](https://raw.githubusercontent.com/Scorpions-Robotics/vision-2021/HEAD/LICENSE) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/opencv-contrib-python?label=Python&logo=python&logoColor=white)](https://python.org) [![Code Style: Black](https://img.shields.io/badge/Code%20Style-Black-000000.svg)](https://github.com/psf/black) [![OpenCV](https://img.shields.io/badge/OpenCV-27338e?style=flat&logo=OpenCV&logoColor=white)](https://opencv.org)
 
+[![CodeFactor](https://www.codefactor.io/repository/github/scorpions-robotics/vision-2021/badge)](https://www.codefactor.io/repository/github/scorpions-robotics/vision-2021) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Scorpions-Robotics/vision-2021.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Scorpions-Robotics/vision-2021/context:python) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cb4eea74001046a98d167e3d0210d2ac)](https://www.codacy.com/gh/Scorpions-Robotics/vision-2021/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Scorpions-Robotics/vision-2021&amp;utm_campaign=Badge_Grade) [![CodeQL](https://github.com/Scorpions-Robotics/vision-2021/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Scorpions-Robotics/vision-2021/actions/workflows/codeql-analysis.yml)
+
 ## Runs on:
 
 [![NVIDIA Jetson Nano 4Gb](https://img.shields.io/badge/NVIDIA-Jetson%20Nano%204GB-76B900?style=flat&logo=nvidia&logoColor=white)](https://developer.nvidia.com/embedded/jetson-nano-developer-kit)
-
-<!---Put code quality badges here in future--->
 
 ## How do we process the vision?
 
