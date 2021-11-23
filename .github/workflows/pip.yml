@@ -1,4 +1,4 @@
-name: Update requirements.txt
+name: Update dependency file
 on: [push]
 jobs:
   build:
@@ -12,5 +12,4 @@ jobs:
 
         # Put an example of mandatory inputs here
         with:
-          PROJECT_PATH: /   #default is the root of the repository
           REQUIREMENT_PATH: requirements.txt  #default is requirement.txt in the root of your repository 
