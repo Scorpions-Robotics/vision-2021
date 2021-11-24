@@ -49,8 +49,8 @@ FILTER_FRAME=1
 
 ; Set upper and lower HSV values for the requested color.
 H_LOWER=40
-S_LOWER=85
-V_LOWER=85
+S_LOWER=60
+V_LOWER=60
 H_UPPER=75
 S_UPPER=255
 V_UPPER=255

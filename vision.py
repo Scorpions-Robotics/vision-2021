@@ -7,13 +7,6 @@ from decouple import config
 from misc.functions import functions
 
 
-x = 0
-y = 0
-w = 0
-h = 0
-d = 0
-r = 0
-
 hsv_lower = (int(config("H_LOWER")), int(config("S_LOWER")), int(config("V_LOWER")))
 hsv_upper = (int(config("H_UPPER")), int(config("S_UPPER")), int(config("V_UPPER")))
 
@@ -21,10 +14,8 @@ kpw = int(config("KNOWN_PIXEL_WIDTH"))
 kd = int(config("KNOWN_DISTANCE"))
 kw = int(config("KNOWN_WIDTH"))
 
-
 NetworkTables.initialize(server="roborio-7672-frc.local")
 table = NetworkTables.getTable("vision")
-
 
 camera = functions.os_action()
 
