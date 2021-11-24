@@ -15,7 +15,7 @@ from misc.camera import set_camera
 def os_action():
     if platform.system() == "Linux":
         while True:
-            subprocess.call("python misc/camera/fix_camera.py", shell=False)
+            subprocess.run(["python", "misc/camera/fix_camera.py"], shell=False)
             break
         set_camera.set_exposure()
         time.sleep(0.5)
@@ -23,7 +23,7 @@ def os_action():
 
     if platform.system() != "Linux":
         while True:
-            subprocess.call("python misc/camera/fix_camera.py", shell=False)
+            subprocess.call(["python", "misc/camera/fix_camera.py"], shell=False)
             break
         camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
         time.sleep(1)
