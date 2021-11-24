@@ -75,7 +75,7 @@ while True:
             try:
                 d = round(d, 2)
                 r = round(r, 2)
-            except:
+            except Exception:
                 pass
 
             table.putString("X", x)
