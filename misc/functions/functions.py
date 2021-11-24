@@ -3,7 +3,7 @@ import numpy as np
 import platform
 from decouple import config
 import time
-import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -15,7 +15,7 @@ from misc.camera import set_camera
 def os_action():
     if platform.system() == "Linux":
         while True:
-            os.system("python misc/camera/fix_camera.py")
+            subprocess.call("python misc/camera/fix_camera.py", shell=False)
             break
         set_camera.set_exposure()
         time.sleep(0.5)
@@ -23,7 +23,7 @@ def os_action():
 
     if platform.system() != "Linux":
         while True:
-            os.system("python misc/camera/fix_camera.py")
+            subprocess.call("python misc/camera/fix_camera.py", shell=False)
             break
         camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
         time.sleep(1)
