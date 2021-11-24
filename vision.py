@@ -72,31 +72,22 @@ while True:
             r = functions.calculate_rotation(camera, x, w)
             b = functions.is_detected(d)
 
-            if b == 0:
-                table.putString("X", "none")
-                table.putString("Y", "none")
-                table.putString("W", "none")
-                table.putString("H", "none")
-                table.putString("D", "none")
-                table.putString("R", "none")
-                table.putString("B", "0")
+            try:
+                d = round(d, 2)
+                r = round(r, 2)
+            except Exception:
+                pass
 
-                if int(config("PRINT_VALUES")) == 1:
-                    print("X: none Y: none W: none H: none D: none R: none B: 0")
+            table.putString("X", x)
+            table.putString("Y", y)
+            table.putString("W", w)
+            table.putString("H", h)
+            table.putString("D", d)
+            table.putString("R", r)
+            table.putNumber("B", b)
 
-            elif b == 1:
-                d = round(d)
-                r = round(r)
-                table.putNumber("X", x)
-                table.putNumber("Y", y)
-                table.putNumber("W", w)
-                table.putNumber("H", h)
-                table.putNumber("D", d)
-                table.putNumber("R", r)
-                table.putNumber("B", 1)
-
-                if int(config("PRINT_VALUES")) == 1:
-                    print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: 1")
+            if int(config("PRINT_VALUES")) == 1:
+                print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: {b}")
 
             if int(config("STREAM_FRAME")) == 1:
                 encoded, buffer = cv2.imencode(".jpg", functions.crosshair(original))
