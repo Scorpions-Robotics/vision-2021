@@ -60,7 +60,7 @@ while True:
                 result, x, y, w, h = functions.vision(frame, cascade_classifier)
 
             d = functions.current_distance(kpw, kd, kw, w)
-            r = functions.calculate_rotation(camera, x, w)
+            r = functions.calculate_rotation(int(config("FRAME_WIDTH")), x, w)
             b = functions.is_detected(d)
 
             try:
@@ -75,7 +75,7 @@ while True:
             table.putString("H", h)
             table.putString("D", d)
             table.putString("R", r)
-            table.putNumber("B", b)
+            table.putString("B", b)
 
             if int(config("PRINT_VALUES")) == 1:
                 print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: {b}")
