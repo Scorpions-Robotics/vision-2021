@@ -64,10 +64,10 @@ def get_dimensions(camera, x_y):
 
 
 # Calculates the distance between the crosshair and the hoop's center.
-def calculate_rotation(camera, x, w):
+def calculate_rotation(x_defined, x, w):
     try:
-        x_c = x + (x / 2) - (w / 4)
-        location = x_c - (get_dimensions(camera, "x") / 2)
+        x_c = x + (x / 2)
+        location = x_c - (x_defined / 2)
         return location * -1
     except Exception:
         return None
