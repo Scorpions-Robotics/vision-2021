@@ -98,6 +98,10 @@ while True:
     except KeyboardInterrupt:
         break
 
-flask_popen.kill()
+try:
+    flask_popen.kill()
+except AttributeError:
+    pass
+
 camera.release()
 cv2.destroyAllWindows()
