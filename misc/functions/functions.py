@@ -171,3 +171,9 @@ def mask_color(frame, lower, upper):
     color[imask] = frame[imask]
 
     return color
+
+
+# Run Flask
+def run_flask():
+    if int(config("STREAM_FRAME")) == 1:
+        return subprocess.Popen(["python", "misc/flask/flask_server.py"], shell=False)

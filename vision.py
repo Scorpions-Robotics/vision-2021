@@ -22,11 +22,12 @@ camera = functions.os_action()
 cascade_classifier = cv2.CascadeClassifier("cascade.xml")
 
 hostname = socket.gethostname()
-local_ip = socket.gethostbyname(hostname)
-
+host_ip = socket.gethostbyname(hostname)
 context = zmq.Context()
 footage_socket = context.socket(zmq.PUB)
-footage_socket.connect(f"tcp://{local_ip}:5555")
+footage_socket.connect(f"tcp://{host_ip}:5555")
+
+flask_popen = functions.run_flask()
 
 
 while True:
@@ -80,13 +81,13 @@ while True:
             if int(config("PRINT_VALUES")) == 1:
                 print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: {b}")
 
-            if int(config("STREAM_FRAME")) == 1:
-                encoded, buffer = cv2.imencode(".jpg", functions.crosshair(original))
-                footage_socket.send(buffer)
-
             if int(config("SHOW_FRAME")) == 1:
                 cv2.imshow("Result", functions.crosshair(result))
                 cv2.waitKey(1)
+
+            if int(config("STREAM_FRAME")) == 1:
+                encoded, buffer = cv2.imencode(".jpg", functions.crosshair(original))
+                footage_socket.send(buffer)
 
         else:
             try:
@@ -97,5 +98,6 @@ while True:
     except KeyboardInterrupt:
         break
 
+flask_popen.kill()
 camera.release()
 cv2.destroyAllWindows()
