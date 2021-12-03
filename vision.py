@@ -30,78 +30,92 @@ footage_socket.connect(f"tcp://{host_ip}:5555")
 flask_popen = functions.run_flask()
 
 
-while True:
-    try:
+try:
 
-        grabbed, original = camera.read()
+    while True:
+        try:
 
-        if grabbed == True:
+            grabbed, original = camera.read()
 
-            frame = original
+            if grabbed == True:
 
-            frame = imutils.resize(
-                frame,
-                width=int(config("FRAME_WIDTH")),
-                height=int(config("FRAME_HEIGHT")),
-            )
+                frame = original
 
-            if int(config("FLIP_FRAME")) == 1:
-                frame = cv2.flip(frame, 1)
+                frame = imutils.resize(
+                    frame,
+                    width=int(config("FRAME_WIDTH")),
+                    height=int(config("FRAME_HEIGHT")),
+                )
 
-            frame = imutils.rotate(frame, int(config("FRAME_ANGLE")))
+                if int(config("FLIP_FRAME")) == 1:
+                    frame = cv2.flip(frame, 1)
 
-            if int(config("WHITE_BALANCE")) == 1:
-                frame = functions.white_balance(frame)
+                frame = imutils.rotate(frame, int(config("FRAME_ANGLE")))
 
-            if int(config("FILTER_FRAME")) == 1:
-                hsv_mask = functions.mask_color(frame, (hsv_lower), (hsv_upper))
-                result, x, y, w, h = functions.vision(hsv_mask, cascade_classifier)
+                if int(config("WHITE_BALANCE")) == 1:
+                    frame = functions.white_balance(frame)
+
+                if int(config("FILTER_FRAME")) == 1:
+                    hsv_mask = functions.mask_color(frame, (hsv_lower), (hsv_upper))
+                    result, x, y, w, h = functions.vision(hsv_mask, cascade_classifier)
+
+                else:
+                    result, x, y, w, h = functions.vision(frame, cascade_classifier)
+
+                d = functions.current_distance(kpw, kd, kw, w)
+                r = functions.calculate_rotation(int(config("FRAME_WIDTH")), x, w)
+                b = functions.is_detected(d)
+
+                try:
+                    d = round(d, 2)
+                    r = round(r, 2)
+                except Exception:
+                    pass
+
+                table.putString("X", x)
+                table.putString("Y", y)
+                table.putString("W", w)
+                table.putString("H", h)
+                table.putString("D", d)
+                table.putString("R", r)
+                table.putString("B", b)
+
+                if int(config("PRINT_VALUES")) == 1:
+                    print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: {b}")
+
+                if int(config("SHOW_FRAME")) == 1:
+                    cv2.imshow("Result", functions.crosshair(result))
+                    cv2.waitKey(1)
+
+                if int(config("STREAM_FRAME")) == 1:
+                    encoded, buffer = cv2.imencode(
+                        ".jpg", functions.crosshair(original, camera)
+                    )
+                    footage_socket.send(buffer)
 
             else:
-                result, x, y, w, h = functions.vision(frame, cascade_classifier)
+                try:
+                    camera = functions.os_action()
+                except Exception:
+                    pass
 
-            d = functions.current_distance(kpw, kd, kw, w)
-            r = functions.calculate_rotation(int(config("FRAME_WIDTH")), x, w)
-            b = functions.is_detected(d)
+        except KeyboardInterrupt:
+            break
 
-            try:
-                d = round(d, 2)
-                r = round(r, 2)
-            except Exception:
-                pass
+    try:
+        flask_popen.kill()
+    except AttributeError:
+        pass
 
-            table.putString("X", x)
-            table.putString("Y", y)
-            table.putString("W", w)
-            table.putString("H", h)
-            table.putString("D", d)
-            table.putString("R", r)
-            table.putString("B", b)
+    camera.release()
+    cv2.destroyAllWindows()
 
-            if int(config("PRINT_VALUES")) == 1:
-                print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: {b}")
+except Exception as e:
+    print(e)
 
-            if int(config("SHOW_FRAME")) == 1:
-                cv2.imshow("Result", functions.crosshair(result))
-                cv2.waitKey(1)
-
-            if int(config("STREAM_FRAME")) == 1:
-                encoded, buffer = cv2.imencode(".jpg", functions.crosshair(original))
-                footage_socket.send(buffer)
-
-        else:
-            try:
-                camera = functions.os_action()
-            except Exception:
-                pass
-
-    except KeyboardInterrupt:
-        break
-
-try:
-    flask_popen.kill()
-except AttributeError:
-    pass
-
-camera.release()
-cv2.destroyAllWindows()
+    try:
+        flask_popen.kill()
+        camera.release()
+        cv2.destroyAllWindows()
+    except AttributeError:
+        pass

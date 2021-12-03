@@ -94,25 +94,24 @@ def resolution_rate(camera):
 
 
 # Takes a frame and returns the frame with the crosshair drawn on it.
-def crosshair(frame, camera):
+def crosshair(frame, camera=0):
     color = (0, 255, 0)
-    x_rate, y_rate = resolution_rate(camera)
-
+    x_rate, y_rate = (1, 1) if camera == 0 else resolution_rate(camera)
     fpt1 = (
-        ((int(config("FRAME_WIDTH")) / 2 - 20) * x_rate),
-        ((int(config("FRAME_HEIGHT")) / 2) * y_rate),
+        (int((((int(config("FRAME_WIDTH"))) / x_rate) / 2) - 20)),
+        (int((int(config("FRAME_HEIGHT")) / y_rate) / 2)),
     )
     fpt2 = (
-        ((int(config("FRAME_WIDTH")) / 2 + 20) * x_rate),
-        ((int(config("FRAME_HEIGHT")) / 2) * y_rate),
+        (int((((int(config("FRAME_WIDTH"))) / x_rate) / 2) + 20)),
+        (int((int(config("FRAME_HEIGHT")) / y_rate) / 2)),
     )
     spt1 = (
-        ((int(config("FRAME_WIDTH")) / 2) * x_rate),
-        ((int(config("FRAME_HEIGHT")) / 2 - 20) * y_rate),
+        (int((int(config("FRAME_WIDTH")) / x_rate) / 2)),
+        (int((((int(config("FRAME_HEIGHT"))) / y_rate) / 2) - 20)),
     )
     spt2 = (
-        ((int(config("FRAME_WIDTH")) / 2) * x_rate),
-        ((int(config("FRAME_HEIGHT") / 2) + 20) * y_rate),
+        (int((int(config("FRAME_WIDTH")) / x_rate) / 2)),
+        (int((((int(config("FRAME_HEIGHT"))) / y_rate) / 2) + 20)),
     )
 
     crosshair = cv2.line(
