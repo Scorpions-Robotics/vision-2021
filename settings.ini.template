@@ -2,16 +2,14 @@
 ; This is a template of settings.ini.
 ; Copy this file and rename it to settings.ini. Then edit it to your needs.
 
-; Width of the frame. Default is 640.
+; Width and height of the frame. Default is 640x480. Keep the ratio at 4:3. Use 320x240 on coprocessor for more performance.
 FRAME_WIDTH = 640
-
-; Height of the frame. Default is 480.
 FRAME_HEIGHT = 480
 
 ; In inches. Measure the real width of the hoop.
 KNOWN_WIDTH=43
 
-; In inches. Measure the pixel width of the hoop. See misc/pixel_calculator.py.
+; In inches. Measure the pixel width of the hoop. Run misc/calibration/pixel_calculator.py.
 KNOWN_PIXEL_WIDTH=231 
 
 ; In inches. Measure the real distance from the hoop to the camera.
@@ -35,7 +33,7 @@ FRAME_ANGLE=0
 ; White balance. Gets values 0 or 1. Default is 1.
 WHITE_BALANCE=1
 
-; Decide if frame is shown or not. Gets values 0 or 1. Default is 1.
+; Decide if frame is shown or not. Gets values 0 or 1. Default is 1. Use 0 while connecting via ssh.
 SHOW_FRAME=1
 
 ; Decide if the frame is streamed or not. Gets values 0 or 1. Default is 1.
