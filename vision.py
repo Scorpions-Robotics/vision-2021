@@ -86,9 +86,7 @@ try:
                     cv2.waitKey(1)
 
                 if int(config("STREAM_FRAME")) == 1:
-                    encoded, buffer = cv2.imencode(
-                        ".jpg", functions.crosshair(frame, camera)
-                    )
+                    encoded, buffer = cv2.imencode(".jpg", functions.crosshair(frame))
                     footage_socket.send(buffer)
 
             else:
