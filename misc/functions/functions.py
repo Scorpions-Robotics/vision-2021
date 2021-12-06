@@ -144,8 +144,7 @@ def is_none(key):
 def is_detected(key):
     if is_none(key) == 0:
         return 1
-    else:
-        return 0
+    return 0
 
 
 # Processes the frame, detects the cascade classifier and returns the frame with squares drawn on the detected object.
