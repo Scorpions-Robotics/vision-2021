@@ -66,9 +66,8 @@ def get_dimensions(camera, x_y):
 # Calculates the distance between the crosshair and the hoop's center.
 def calculate_rotation(x_defined, x, w):
     try:
-        x_c = x + (x / 2)
-        location = x_c - (x_defined / 2)
-        return location * -1
+        x_c = x + (w / 2)
+        return x_c - (x_defined / 2)
     except Exception:
         return None
 
@@ -145,8 +144,7 @@ def is_none(key):
 def is_detected(key):
     if is_none(key) == 0:
         return 1
-    else:
-        return 0
+    return 0
 
 
 # Processes the frame, detects the cascade classifier and returns the frame with squares drawn on the detected object.
