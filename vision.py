@@ -35,11 +35,9 @@ try:
     while True:
         try:
 
-            grabbed, original = camera.read()
+            grabbed, frame = camera.read()
 
             if grabbed == True:
-
-                frame = original
 
                 frame = imutils.resize(
                     frame,
@@ -89,7 +87,7 @@ try:
 
                 if int(config("STREAM_FRAME")) == 1:
                     encoded, buffer = cv2.imencode(
-                        ".jpg", functions.crosshair(original, camera)
+                        ".jpg", functions.crosshair(frame, camera)
                     )
                     footage_socket.send(buffer)
 
