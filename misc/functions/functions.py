@@ -67,8 +67,10 @@ def get_dimensions(camera, x_y):
 def calculate_rotation(x_defined, x, w):
     try:
         x_c = x + (x / 2)
+        if x_c > (x_defined / 2):
+            x_c = (x_c / 6) * 4.8
         location = x_c - (x_defined / 2)
-        return location * -1
+        return location
     except Exception:
         return None
 
