@@ -69,8 +69,7 @@ def calculate_rotation(x_defined, x, w):
         x_c = x + (x / 2)
         if x_c > (x_defined / 2):
             x_c = (x_c / 6) * 4.8
-        location = x_c - (x_defined / 2)
-        return location
+        return x_c - (x_defined / 2)
     except Exception:
         return None
 
