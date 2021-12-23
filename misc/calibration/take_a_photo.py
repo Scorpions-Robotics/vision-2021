@@ -7,6 +7,7 @@ from pathlib import Path
 sys.path.append(str(Path("..").absolute().parent))
 from misc.functions import functions
 
+
 camera = functions.os_action()
 
 while True:
@@ -31,7 +32,7 @@ while True:
 
             cv2.imshow("img", frame)
             if cv2.waitKey(1) & 0xFF == ord("y"):
-                cv2.imwrite('images/ref-pic.jpeg', frame)
+                cv2.imwrite("images/ref-pic.jpeg", frame)
                 print("Taken image is written under images folder.")
                 break
 

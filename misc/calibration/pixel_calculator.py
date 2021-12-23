@@ -51,7 +51,7 @@ while True:
                 thickness,
                 lineType,
             )
-            cv2.imwrite('images/ref-pic-post.jpeg', result)
+            cv2.imwrite("images/ref-pic-post.jpeg", result)
             print("Processed image is written under images folder.")
             break
 

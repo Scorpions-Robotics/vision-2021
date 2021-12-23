@@ -2,6 +2,16 @@
 ; This is a template of settings.ini.
 ; Copy this file and rename it to settings.ini. Then edit it to your needs.
 
+; Set to 1 if you are testing locally.
+NETWORKTABLES_TEST_MODE = 0
+
+; Set the IP address of the network tables server. If you are testing locally, set this to the IP address of the server.
+; If you are running on a robot, you need to set this to the IP address of the robot, which is roborio-7672-frc.local (mDNS).
+NETWORKTABLES_SERVER = roborio-7672-frc.local
+
+; Set your NetworkTables table name. In our case it is "vision".
+NETWORKTABLES_TABLE = vision
+
 ; Width and height of the frame. Default is 640x480. Keep the ratio at 4:3. Use 320x240 on coprocessor for more performance.
 FRAME_WIDTH = 640
 FRAME_HEIGHT = 480
