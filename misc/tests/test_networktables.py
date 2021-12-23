@@ -1,7 +1,8 @@
-sys.path.append(str(Path("..").absolute().parent))
-from misc.functions import functions
 from pathlib import Path
 import sys
+
+sys.path.append(str(Path("..").absolute().parent))
+from misc.functions import functions
 
 
 table = functions.nt_listener_init()

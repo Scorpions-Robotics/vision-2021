@@ -1,9 +1,10 @@
-sys.path.append(str(Path("..").absolute().parent))
-from misc.functions import functions
 import cv2
 import numpy as np
 import sys
 from pathlib import Path
+
+sys.path.append(str(Path("..").absolute().parent))
+from misc.functions import functions
 
 
 def nothing(x):

@@ -1,8 +1,9 @@
-sys.path.append(str(Path("..").absolute().parent))
-from misc.functions import functions
 import cv2
 import sys
 from pathlib import Path
+
+sys.path.append(str(Path("..").absolute().parent))
+from misc.functions import functions
 
 
 x = 0
