@@ -1,9 +1,8 @@
+sys.path.append(str(Path("..").absolute().parent))
+from misc.functions import functions
 import cv2
 import sys
 from pathlib import Path
-
-sys.path.append(str(Path("..").absolute().parent))
-from misc.functions import functions
 
 
 x = 0
@@ -51,7 +50,7 @@ while True:
                 thickness,
                 lineType,
             )
-            cv2.imwrite('images/ref-pic-post.jpeg', result)
+            cv2.imwrite("images/ref-pic-post.jpeg", result)
             print("Processed image is written under images folder.")
             break
 
