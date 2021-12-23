@@ -1,7 +1,10 @@
-from networktables import NetworkTables
+from pathlib import Path
+import sys
 
-NetworkTables.initialize("roborio-7672-frc.local")
-table = NetworkTables.getTable("vision")
+sys.path.append(str(Path("..").absolute().parent))
+from misc.functions import functions
+
+table = functions.nt_listener_init()
 
 
 def try_get_value(key):

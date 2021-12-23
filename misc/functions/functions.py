@@ -6,6 +6,7 @@ import time
 import subprocess
 import sys
 from pathlib import Path
+from networktables import NetworkTables
 
 sys.path.append(str(Path("..").absolute().parent))
 from misc.camera import set_camera
@@ -30,6 +31,21 @@ def os_action():
         camera.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
         camera.set(15, int(config("WINDOWS_EXPOSURE")))
     return camera
+
+
+# Initialize NetworkTables.
+def nt_init():
+    if config("NETWORKTABLES_TEST_MODE") == "1":
+        NetworkTables.initialize()
+    else:
+        NetworkTables.initialize(server=config("NETWORKTABLES_SERVER"))
+    return NetworkTables.getTable(config("NETWORKTABLES_TABLE"))
+
+
+# Initialize NetworkTables listener.
+def nt_listener_init():
+    NetworkTables.initialize(server=config("NETWORKTABLES_SERVER"))
+    return NetworkTables.getTable(config("NETWORKTABLES_TABLE"))
 
 
 # Takes a frame and returns the frame white balanced.
@@ -95,21 +111,20 @@ def resolution_rate(camera):
 # Takes a frame and returns the frame with the crosshair drawn on it.
 def crosshair(frame):
     color = (0, 255, 0)
-    fpt1 = (
-        (int(((int(config("FRAME_WIDTH"))) / 2) - 20)),
-        (int(int(config("FRAME_HEIGHT")) / 2)),
+    fpt1 = (int(((int(config("FRAME_WIDTH"))) / 2) - 20)), int(
+        config("FRAME_HEIGHT")
+    ) // 2
+
+    fpt2 = (int(((int(config("FRAME_WIDTH"))) / 2) + 20)), int(
+        config("FRAME_HEIGHT")
+    ) // 2
+
+    spt1 = int(config("FRAME_WIDTH")) // 2, (
+        int(((int(config("FRAME_HEIGHT"))) / 2) - 20)
     )
-    fpt2 = (
-        (int(((int(config("FRAME_WIDTH"))) / 2) + 20)),
-        (int(int(config("FRAME_HEIGHT")) / 2)),
-    )
-    spt1 = (
-        (int(int(config("FRAME_WIDTH")) / 2)),
-        (int(((int(config("FRAME_HEIGHT"))) / 2) - 20)),
-    )
-    spt2 = (
-        (int(int(config("FRAME_WIDTH")) / 2)),
-        (int(((int(config("FRAME_HEIGHT"))) / 2) + 20)),
+
+    spt2 = int(config("FRAME_WIDTH")) // 2, (
+        int(((int(config("FRAME_HEIGHT"))) / 2) + 20)
     )
 
     crosshair = cv2.line(

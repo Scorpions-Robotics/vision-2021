@@ -1,4 +1,3 @@
-from networktables import NetworkTables
 import cv2
 import imutils
 import zmq
@@ -14,8 +13,7 @@ kpw = int(config("KNOWN_PIXEL_WIDTH"))
 kd = int(config("KNOWN_DISTANCE"))
 kw = int(config("KNOWN_WIDTH"))
 
-NetworkTables.initialize(server="roborio-7672-frc.local")
-table = NetworkTables.getTable("vision")
+table = functions.nt_init()
 
 camera = functions.os_action()
 
