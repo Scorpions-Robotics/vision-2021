@@ -43,15 +43,15 @@ try:
                     height=int(config("FRAME_HEIGHT")),
                 )
 
-                if int(config("FLIP_FRAME")) == 1:
+                if int(config("FLIP_FRAME")):
                     frame = cv2.flip(frame, 1)
 
                 frame = imutils.rotate(frame, int(config("FRAME_ANGLE")))
 
-                if int(config("WHITE_BALANCE")) == 1:
+                if int(config("WHITE_BALANCE")):
                     frame = functions.white_balance(frame)
 
-                if int(config("FILTER_FRAME")) == 1:
+                if int(config("FILTER_FRAME")):
                     hsv_mask = functions.mask_color(frame, (hsv_lower), (hsv_upper))
                     result, x, y, w, h = functions.vision(hsv_mask, cascade_classifier)
 
@@ -60,7 +60,7 @@ try:
 
                 d = functions.current_distance(kpw, kd, kw, w)
                 r = functions.calculate_rotation(int(config("FRAME_WIDTH")), x, w)
-                b = functions.is_detected(d)
+                b = int(functions.is_detected(d))
 
                 try:
                     d = round(d, 2)
@@ -76,14 +76,14 @@ try:
                 table.putString("R", r)
                 table.putString("B", b)
 
-                if int(config("PRINT_VALUES")) == 1:
+                if int(config("PRINT_VALUES")):
                     print(f"X: {x} Y: {y} W: {w} H: {h} D: {d} R: {r} B: {b}")
 
-                if int(config("SHOW_FRAME")) == 1:
+                if int(config("SHOW_FRAME")):
                     cv2.imshow("Result", functions.crosshair(result))
                     cv2.waitKey(1)
 
-                if int(config("STREAM_FRAME")) == 1:
+                if int(config("STREAM_FRAME")):
                     encoded, buffer = cv2.imencode(".jpg", functions.crosshair(frame))
                     footage_socket.send(buffer)
 

@@ -22,7 +22,7 @@ def os_action():
         time.sleep(0.5)
         camera = cv2.VideoCapture(int(config("CAMERA_INDEX")))
 
-    if platform.system() != "Linux":
+    else:
         while True:
             subprocess.call(["python", "misc/camera/fix_camera.py"], shell=False)
             break
@@ -35,7 +35,7 @@ def os_action():
 
 # Initialize NetworkTables.
 def nt_init():
-    if config("NETWORKTABLES_TEST_MODE") == "1":
+    if int(config("NETWORKTABLES_TEST_MODE")):
         NetworkTables.initialize()
     else:
         NetworkTables.initialize(server=config("NETWORKTABLES_SERVER"))
@@ -101,13 +101,6 @@ def current_distance(kpw, kd, kw, w):
         pass
 
 
-# Calculates the value of specified resolution divided by original camera resolution.
-def resolution_rate(camera):
-    return (int(config("FRAME_WIDTH")) / get_dimensions(camera, "x")), (
-        int(config("FRAME_HEIGHT")) / get_dimensions(camera, "y")
-    )
-
-
 # Takes a frame and returns the frame with the crosshair drawn on it.
 def crosshair(frame):
     color = (0, 255, 0)
@@ -145,20 +138,9 @@ def crosshair(frame):
     return crosshair
 
 
-# Checks if the value is none.
-def is_none(key):
-    try:
-        key = key + 1
-        return 0
-    except Exception:
-        return 1
-
-
 # Checks if the hoop is in the frame.
 def is_detected(key):
-    if is_none(key) == 0:
-        return 1
-    return 0
+    return key is not None
 
 
 # Processes the frame, detects the cascade classifier and returns the frame with squares drawn on the detected object.
@@ -171,7 +153,7 @@ def vision(frame, cascade_classifier):
     for (x, y, w, h) in hoops:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-    if len(hoops) == 0:
+    if not len(hoops):
         x, y, w, h = "none", "none", "none", "none"
 
     return frame, x, y, w, h
@@ -195,5 +177,5 @@ def mask_color(frame, lower, upper):
 
 # Run Flask
 def run_flask():
-    if int(config("STREAM_FRAME")) == 1:
+    if int(config("STREAM_FRAME")):
         return subprocess.Popen(["python", "misc/flask/flask_server.py"], shell=False)
