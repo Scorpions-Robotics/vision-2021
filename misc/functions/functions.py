@@ -139,7 +139,7 @@ def crosshair(frame):
 
 
 # Checks if the hoop is in the frame.
-def is_detected(key) -> int:
+def is_detected(key):
     return key is not None
 
 
