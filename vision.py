@@ -60,7 +60,7 @@ try:
 
                 d = functions.current_distance(kpw, kd, kw, w)
                 r = functions.calculate_rotation(int(config("FRAME_WIDTH")), x, w)
-                b = functions.is_detected(d)
+                b = int(functions.is_detected(d))
 
                 try:
                     d = round(d, 2)

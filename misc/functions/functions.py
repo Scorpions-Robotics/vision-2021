@@ -101,13 +101,6 @@ def current_distance(kpw, kd, kw, w):
         pass
 
 
-# Calculates the value of specified resolution divided by original camera resolution.
-def resolution_rate(camera):
-    return (int(config("FRAME_WIDTH")) / get_dimensions(camera, "x")), (
-        int(config("FRAME_HEIGHT")) / get_dimensions(camera, "y")
-    )
-
-
 # Takes a frame and returns the frame with the crosshair drawn on it.
 def crosshair(frame):
     color = (0, 255, 0)
@@ -145,18 +138,9 @@ def crosshair(frame):
     return crosshair
 
 
-# Checks if the value is none.
-def is_none(key):
-    if key is None:
-        return True
-    return False
-
-
 # Checks if the hoop is in the frame.
-def is_detected(key):
-    if is_none(key):
-        return 0
-    return 1
+def is_detected(key) -> int:
+    return key is not None
 
 
 # Processes the frame, detects the cascade classifier and returns the frame with squares drawn on the detected object.
