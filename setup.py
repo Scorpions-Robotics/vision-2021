@@ -89,17 +89,17 @@ try:
         break
 
     service = f"""[Unit]
-    Requires=network-online.target
-    After=network-online.target
-    StandardOutput=append:{config("WORKING_DIR")}/log/stdout.log
-    StandardError=append:{config("WORKING_DIR")}/log/stderr.log
-    Description="{args.service_name} Service"
-    [Service]
-    WorkingDirectory={config("WORKING_DIR")}
-    ExecStart=/usr/bin/python {config("WORKING_DIR")}vision.py
-    User={args.service_name}
-    [Install]
-    WantedBy=multi-user.target"""
+Requires=network-online.target
+After=network-online.target
+Description="{args.service_name} Service"
+[Service]
+WorkingDirectory={config("WORKING_DIR")}
+ExecStart=/usr/bin/python {config("WORKING_DIR")}vision.py
+StandardOutput=append:{config("WORKING_DIR")}/log/stdout.log
+StandardError=append:{config("WORKING_DIR")}/log/stderr.log
+User={args.service_name}
+[Install]
+WantedBy=multi-user.target"""
 
     with open(f"/lib/systemd/system/{args.service_name}.service", "w") as f:
         f.write(service)
