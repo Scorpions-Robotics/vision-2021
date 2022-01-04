@@ -2,6 +2,12 @@
 ; This is a template of settings.ini.
 ; Copy this file and rename it to settings.ini. Then edit it to your needs.
 
+; Working directory, aka where this file is located. Don't forget the trailing slash.
+WORKING_DIR = /home/scorpions/repos/vision-2021/
+
+; Jetson's IP address.
+JETSON_IP = 10.76.72.10 
+
 ; Set to 1 if you are testing locally.
 NETWORKTABLES_TEST_MODE = 0
 

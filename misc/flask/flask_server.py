@@ -1,4 +1,5 @@
 from flask import Flask, render_template, Response
+from decouple import config
 import cv2
 import numpy as np
 import zmq
@@ -32,4 +33,4 @@ def video_feed():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host=config("JETSON_IP"))

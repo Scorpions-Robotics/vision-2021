@@ -2,9 +2,12 @@ import cv2
 import imutils
 import zmq
 import socket
+from datetime import datetime
 from decouple import config
 from misc.functions import functions
 
+
+print(f"Starting vision-processing...\nTime (UTC): {datetime.utcnow()}")
 
 hsv_lower = (int(config("H_LOWER")), int(config("S_LOWER")), int(config("V_LOWER")))
 hsv_upper = (int(config("H_UPPER")), int(config("S_UPPER")), int(config("V_UPPER")))
