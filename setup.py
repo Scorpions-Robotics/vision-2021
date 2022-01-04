@@ -31,32 +31,60 @@ try:
 
     while True:
         subprocess.call(
-            "sudo python -m pip install --upgrade -r requirements.txt", shell=False
-        )
-        break
-
-    while True:
-        subprocess.call(f"sudo addgroup --system {args.service_name}", shell=False)
-        break
-
-    while True:
-        subprocess.call(
-            f"sudo adduser --system --no-create-home --disabled-login --disabled-password --ingroup {args.service_name} {args.service_name}",
+            [
+                "sudo",
+                "python",
+                "-m",
+                "pip",
+                "install",
+                "--upgrade",
+                "-r",
+                "requirements.txt",
+            ],
             shell=False,
         )
         break
 
     while True:
-        subprocess.call(f"sudo usermod -a -G sudo {args.service_name}", shell=False)
-        break
-
-    while True:
-        subprocess.call(f"sudo usermod -a -G video {args.service_name}", shell=False)
+        subprocess.call(
+            ["sudo", "addgroup", "--system", f"{args.service_name}"], shell=False
+        )
         break
 
     while True:
         subprocess.call(
-            f"sudo touch /lib/systemd/system/{args.service_name}.service", shell=False
+            [
+                "sudo",
+                "adduser",
+                "--system",
+                "--no-create-home",
+                "--disabled-login",
+                "--disabled-password",
+                "--ingroup",
+                f"{args.service_name}",
+                f"{args.service_name}",
+            ],
+            shell=False,
+        )
+        break
+
+    while True:
+        subprocess.call(
+            ["sudo", "usermod", "-a", "-G", "sudo", f"{args.service_name}"], shell=False
+        )
+        break
+
+    while True:
+        subprocess.call(
+            ["sudo", "usermod", "-a", "-G", "video", f"{args.service_name}"],
+            shell=False,
+        )
+        break
+
+    while True:
+        subprocess.call(
+            ["sudo", "touch", f"/lib/systemd/system/{args.service_name}.service"],
+            shell=False,
         )
         break
 
@@ -77,7 +105,9 @@ try:
         f.write(service)
 
     while True:
-        subprocess.call(f"sudo systemctl enable {args.service_name}", shell=False)
+        subprocess.call(
+            ["sudo", "systemctl", "enable", f"{args.service_name}"], shell=False
+        )
         break
 
     print("vision-2021 is installed and enabled. It will start on boot.")
