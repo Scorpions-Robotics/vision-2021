@@ -105,12 +105,16 @@ try:
         f.write(service)
 
     while True:
+        subprocess.call(["sudo", "systemctl", "daemon-reload"], shell=False)
+        break
+
+    while True:
         subprocess.call(
             ["sudo", "systemctl", "enable", f"{args.service_name}"], shell=False
         )
         break
 
-    print("vision-2021 is installed and enabled. It will start on boot.")
+    print("vision-2021 is installed and enabled. It will start automatically on boot.")
 
 except Exception as e:
     print("error: Please run as root. (sudo python setup.py)")
