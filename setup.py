@@ -1,14 +1,14 @@
 import subprocess
 import platform
 import argparse
-import os
-from datetime import datetime
+from misc.functions import functions
 from decouple import config
 
 
 if platform.system() != "Linux":
     exit("error: This can only run on Linux.")
 
+functions.systemctl_log()
 
 try:
 
@@ -18,32 +18,26 @@ try:
     )
     args = parser.parse_args()
 
-    if not os.path.isdir(f'{config("WORKING_DIR")}/log/'):
-        os.mkdir(f'{config("WORKING_DIR")}/log/')
-
-    if not os.path.isfile(f'{config("WORKING_DIR")}/log/stdout.log'):
-        with open(f'{config("WORKING_DIR")}/log/stdout.log', "w") as f:
-            f.write(f"Created: {datetime.utcnow()}\n")
-
-    if not os.path.isfile(f'{config("WORKING_DIR")}/log/stderr.log'):
-        with open(f'{config("WORKING_DIR")}/log/stderr.log', "w") as f:
-            f.write(f"Created: {datetime.utcnow()}\n")
-
-    while True:
-        subprocess.call(
-            [
-                "sudo",
-                "python",
-                "-m",
-                "pip",
-                "install",
-                "--upgrade",
-                "-r",
-                "requirements.txt",
-            ],
-            shell=False,
+    if functions.is_connected():
+        while True:
+            subprocess.call(
+                [
+                    "sudo",
+                    "python",
+                    "-m",
+                    "pip",
+                    "install",
+                    "--upgrade",
+                    "-r",
+                    "requirements.txt",
+                ],
+                shell=False,
+            )
+            break
+    else:
+        print(
+            "Internet is not connected. Skipping dependency installations. This may cause problems."
         )
-        break
 
     while True:
         subprocess.call(

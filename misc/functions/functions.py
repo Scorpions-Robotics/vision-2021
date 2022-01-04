@@ -4,12 +4,37 @@ import platform
 from decouple import config
 import time
 import subprocess
-import sys
+import urllib.request
+import sys, os
+from datetime import datetime
 from pathlib import Path
 from networktables import NetworkTables
 
 sys.path.append(str(Path("..").absolute().parent))
 from misc.camera import set_camera
+
+
+# Checks if log files exist. If not, creates them.
+def systemctl_log():
+    if not os.path.isdir(f'{config("WORKING_DIR")}/log/'):
+        os.mkdir(f'{config("WORKING_DIR")}/log/')
+
+    if not os.path.isfile(f'{config("WORKING_DIR")}/log/stdout.log'):
+        with open(f'{config("WORKING_DIR")}/log/stdout.log', "w") as f:
+            f.write(f"Created: {datetime.utcnow()}\n")
+
+    if not os.path.isfile(f'{config("WORKING_DIR")}/log/stderr.log'):
+        with open(f'{config("WORKING_DIR")}/log/stderr.log', "w") as f:
+            f.write(f"Created: {datetime.utcnow()}\n")
+
+
+# Checks internet connection.
+def is_connected():
+    try:
+        urllib.request.urlopen("8.8.8.8")
+        return True
+    except Exception:
+        return False
 
 
 # Takes action and defines the camera based on the OS type.
