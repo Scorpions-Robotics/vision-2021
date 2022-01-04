@@ -82,5 +82,6 @@ try:
 
     print("vision-2021 is installed and enabled. It will start on boot.")
 
-except Exception:
+except Exception as e:
     print("error: Please run as root. (sudo python setup.py)")
+    print(e)
