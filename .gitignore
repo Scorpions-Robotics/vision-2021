@@ -9,6 +9,9 @@
 # User settings
 settings.ini
 
+# Log folder
+log/
+
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
