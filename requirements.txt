@@ -6,3 +6,4 @@ imutils
 python-decouple
 black
 flask
+requests
