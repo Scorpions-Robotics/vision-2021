@@ -4,7 +4,7 @@ import platform
 from decouple import config
 import time
 import subprocess
-import urllib.request
+import requests
 import sys, os
 from datetime import datetime
 from pathlib import Path
@@ -31,9 +31,9 @@ def systemctl_log():
 # Checks internet connection.
 def is_connected():
     try:
-        urllib.request.urlopen("8.8.8.8")
+        request = requests.get("http://google.com", timeout=5)
         return True
-    except Exception:
+    except (requests.ConnectionError, requests.Timeout):
         return False
 
 
