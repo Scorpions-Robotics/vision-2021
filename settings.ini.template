@@ -8,19 +8,19 @@ WORKING_DIR = /home/scorpions/repos/vision-2021/
 ; Jetson's IP address.
 JETSON_IP = 10.76.72.10 
 
-; Set to 1 if you are testing locally.
-NETWORKTABLES_TEST_MODE = 0
+; Set to 1 if you are not using roboRIO as the server.
+NETWORKTABLES_SERVER_MODE = 1
 
-; Set the IP address of the network tables server. If you are testing locally, set this to the IP address of the server.
-; If you are running on a robot, you need to set this to the IP address of the robot, which is roborio-7672-frc.local (mDNS).
-NETWORKTABLES_SERVER = roborio-7672-frc.local
+; Set the IP address of the network tables server. If you are not using roboRIO as the server, set this to the IP address of the server.
+; If you are using roboRIO as the server, you need to set this to the IP address of the robot, which is roborio-7672-frc.local (mDNS).
+NETWORKTABLES_SERVER = 10.76.72.10
 
 ; Set your NetworkTables table name. In our case it is "vision".
 NETWORKTABLES_TABLE = vision
 
-; Width and height of the frame. Default is 640x480. Keep the ratio at 4:3. Use 320x240 on coprocessor for more performance.
-FRAME_WIDTH = 640
-FRAME_HEIGHT = 480
+; Width and height of the frame. Default is 320x240. Use 320x240 on coprocessor for more performance. You can use any resolution as long as you keep the ratio at 4:3.
+FRAME_WIDTH = 320
+FRAME_HEIGHT = 240
 
 ; In inches. Measure the real width of the hoop.
 KNOWN_WIDTH = 43
@@ -31,8 +31,8 @@ KNOWN_PIXEL_WIDTH = 231
 ; In inches. Measure the real distance from the hoop to the camera.
 KNOWN_DISTANCE = 124
 
-; Index number of the camera to use. Default is 0.
-CAMERA_INDEX = 0
+; Index number of the camera to use. Default is -1.
+CAMERA_INDEX = -1
 
 ; Only used on Windows. Default is -10.
 WINDOWS_EXPOSURE = -10
